@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:acc600f466f4aa39e4e3120a7f602e66fda7f9e54486f2fe0ef78f53aa2eef4c
-size 350
+import 'package:flutter/material.dart';
+
+class commonAppbar extends StatelessWidget {
+  final String title;
+
+  const commonAppbar({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(title),
+      centerTitle: true,
+      backgroundColor: Colors.white,
+    );
+  }
+}

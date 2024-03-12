@@ -1,3 +1,64 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:106507fbd79780a84081d7c011f62ce4d7be3ba974f9ccb6e3d24282d149d02e
-size 1915
+import 'package:bada/widgets/buttons.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class CreateFamily extends StatelessWidget {
+  final String title, buttonName;
+
+  const CreateFamily({
+    super.key,
+    this.title = '가족 그룹 만들기',
+    this.buttonName = '만들기',
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    '가족 그룹 별명',
+                    style: TextStyle(
+                      fontSize: 19,
+                      color: Color(0xff696DFF),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color(0xff696DFF).withOpacity(0.2),
+                  border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      borderSide: BorderSide(
+                        color: const Color(0xff696DFF).withOpacity(0.4),
+                      )),
+                  labelText: '작성해주세요',
+                ),
+              ),
+              const SizedBox(height: 400),
+              const Button714_150(label: Text('만들기')),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

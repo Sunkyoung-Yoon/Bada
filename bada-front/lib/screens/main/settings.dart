@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:944ff8fb165ead77329ca67617be5158c783224474add6596105546159dff9ea
-size 370
+import 'package:flutter/material.dart';
+
+class Settings extends StatelessWidget {
+  const Settings({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('설정'),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+      ),
+    );
+  }
+}

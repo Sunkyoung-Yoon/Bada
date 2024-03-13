@@ -13,8 +13,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
-    debugPrint(profileProvider.profileImage!);
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(

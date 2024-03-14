@@ -1,3 +1,38 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8bc6f46a19651474eb187ab8dc6520eabaf499f668b1a5fffce38a26ec98fb01
-size 1617
+package com.bada.badaback.global.annotation;
+
+import com.bada.badaback.auth.exception.AuthErrorCode;
+import com.bada.badaback.auth.utils.AuthorizationExtractor;
+import com.bada.badaback.global.exception.BaseException;
+import com.bada.badaback.global.security.JwtProvider;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.MethodParameter;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
+
+@RequiredArgsConstructor
+public class ExtractTokenArgumentResolver implements HandlerMethodArgumentResolver {
+    private final JwtProvider jwtProvider;
+
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return parameter.hasParameterAnnotation(ExtractToken.class);
+    }
+
+    @Override
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+        String token = AuthorizationExtractor.extractToken(request)
+                .orElseThrow(() -> BaseException.type(AuthErrorCode.INVALID_PERMISSION));
+        validateTokenIntegrity(token);
+        return token;
+    }
+
+    private void validateTokenIntegrity(String token) {
+        jwtProvider.validateToken(token);
+    }
+}
+
+

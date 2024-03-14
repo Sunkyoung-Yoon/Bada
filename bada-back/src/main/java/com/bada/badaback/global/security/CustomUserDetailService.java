@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:90f42705ae97749a92fdfaf6e1e3c806640ebc6fc093ce4a7280fe7f868e7a5d
-size 1153
+package com.bada.badaback.global.security;
+
+import com.bada.badaback.global.exception.BaseException;
+import com.bada.badaback.member.domain.Member;
+import com.bada.badaback.member.domain.MemberRepository;
+import com.bada.badaback.member.exception.MemberErrorCode;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class CustomUserDetailService implements UserDetailsService {
+    private final MemberRepository memberRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> BaseException.type(MemberErrorCode.MEMBER_NOT_FOUND)
+                );
+
+        return new CustomUserDetails(member);
+    }
+}
+

@@ -1,3 +1,62 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7766ef52b984e6412d39fceacdbae163e53caaaa14145b2305afa145b2525e33
-size 1396
+[
+  {
+    "memberId": 1,
+    "name": "John Doe",
+    "phoneNumber": "010-1234-5678",
+    "email": "john.doe@example.com",
+    "social": "NAVER",
+    "createdAt": "CURRENT_TIMESTAMP",
+    "isParent": true,
+    "role": "USER",
+    "profileUrl": "http://example.com/profiles/johndoe",
+    "familyCode": "FAM123"
+  },
+  {
+    "memberId": 2,
+    "name": "Jane Smith",
+    "phoneNumber": "010-2345-6789",
+    "email": "jane.smith@example.com",
+    "social": "KAKAO",
+    "createdAt": "CURRENT_TIMESTAMP",
+    "isParent": true,
+    "role": "USER",
+    "profileUrl": "http://example.com/profiles/janesmith",
+    "familyCode": "FAM123"
+  },
+  {
+    "memberId": 3,
+    "name": "Alice Johnson",
+    "phoneNumber": null,
+    "email": null,
+    "social": "CHILD",
+    "createdAt": "CURRENT_TIMESTAMP",
+    "isParent": false,
+    "role": "USER",
+    "profileUrl": null,
+    "familyCode": "FAM123"
+  },
+  {
+    "memberId": 4,
+    "name": "Bob Brown",
+    "phoneNumber": null,
+    "email": null,
+    "social": "CHILD",
+    "createdAt": "CURRENT_TIMESTAMP",
+    "isParent": false,
+    "role": "USER",
+    "profileUrl": null,
+    "familyCode": "FAM123"
+  },
+  {
+    "memberId": 5,
+    "name": "Charlie Davis",
+    "phoneNumber": null,
+    "email": null,
+    "social": "CHILD",
+    "createdAt": "CURRENT_TIMESTAMP",
+    "isParent": false,
+    "role": "USER",
+    "profileUrl": null,
+    "familyCode": "FAM123"
+  }
+]

@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9d94ecc8a3de5c3d17119101535e31c9b3e9dae074e808633ecccb8831e704fd
-size 343
+package com.bada.badaback.auth.dto;
+
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthJoinChildRequestDto(
+        @NotBlank(message = "이름은 필수입니다.")
+        String name,
+        String phone,
+        String profileUrl,
+        @NotBlank(message = "인증코드는 필수입니다.")
+        String code
+) {
+}

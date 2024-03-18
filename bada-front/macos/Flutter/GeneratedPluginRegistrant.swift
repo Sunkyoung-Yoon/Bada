@@ -1,14 +1,3 @@
-//
-//  Generated file. Do not edit.
-//
-
-import FlutterMacOS
-import Foundation
-
-import shared_preferences_foundation
-import sqflite
-
-func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))
-  SqflitePlugin.register(with: registry.registrar(forPlugin: "SqflitePlugin"))
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:f5322fd8f98490c912f963df44b14655b2860f361cef7342573e1e73cfb45fdd
+size 493

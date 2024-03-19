@@ -1,17 +1,3 @@
-import 'package:bada/widgets/alarm.dart';
-import 'package:flutter/material.dart';
-
-class AlarmSetting extends StatelessWidget {
-  const AlarmSetting({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('알람 설정'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-      ),
-    );
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4b09adb950f19ab1d11ca6bbce8bd20627d81f9f1ea7313cac402db10acac431
+size 348

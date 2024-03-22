@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:03a3db5f2fa3a93ebcf409d594cf1efcc84ca746c758147192af355b1873c6ec
-size 791
+package com.bada.badaback.safefacility.dto;
+
+import com.bada.badaback.safefacility.domain.Point;
+import lombok.Builder;
+
+@Builder
+public record SafeFacilityResponseDto(
+        String startX,
+        String startY,
+        String endX,
+        String endY,
+        String passList
+) {
+    public static SafeFacilityResponseDto from(Point start,
+                                        Point end,
+                                        String passList){
+        return SafeFacilityResponseDto.builder()
+                .startX(start.getLongitude().toString())
+                .startY(start.getLatitude().toString())
+                .endX(end.getLongitude().toString())
+                .endY(end.getLatitude().toString())
+                .passList(passList)
+                .build();
+    }
+}

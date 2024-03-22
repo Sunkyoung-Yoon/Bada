@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bee54cff30483a053f86abb59f8221e303cb769e64d77620e1f9cedc0a6d82a9
-size 522
+package com.bada.badaback.myplace.exception;
+
+import com.bada.badaback.global.exception.ErrorCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum MyPlaceErrorCode implements ErrorCode {
+    MYPLACE_NOT_FOUND(HttpStatus.NOT_FOUND, "MYPLACE_001", "마이플레이스 정보를 찾을 수 없습니다.")
+    ;
+
+    private final HttpStatus status;
+    private final String errorCode;
+    private final String message;
+}

@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7a39e94ec070bdd30570c53ad63ad0e2193ea1e1d7f5a980efbe232435855ab8
-size 260
+package com.bada.badaback.auth.dto;
+
+import lombok.Builder;
+
+@Builder
+public record LoginResponseDto(
+        Long memberId,
+        String name,
+        String familyCode,
+        String accessToken,
+        String refreshToken,
+        String fcmToken
+) {
+}

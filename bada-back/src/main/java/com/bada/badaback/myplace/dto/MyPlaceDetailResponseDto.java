@@ -1,3 +1,35 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c3319bca04fb0802c292d01d4c0926a481a11690775153bcb3abc8f97b573b5b
-size 1286
+package com.bada.badaback.myplace.dto;
+
+import com.bada.badaback.myplace.domain.MyPlace;
+import lombok.Builder;
+
+@Builder
+public record MyPlaceDetailResponseDto(
+        Long myPlaceId,
+        String placeName,
+        String placeLatitude,
+        String placeLongitude,
+        String placeCategoryCode,
+        String placePhoneNumber,
+        String icon,
+        String familyCode,
+        String addressName,
+        String addressRoadName,
+        String placeCode
+) {
+    public static MyPlaceDetailResponseDto from(MyPlace findMyPlace) {
+        return MyPlaceDetailResponseDto.builder()
+                .myPlaceId(findMyPlace.getId())
+                .placeName(findMyPlace.getPlaceName())
+                .placeLatitude(findMyPlace.getPlaceLatitude())
+                .placeLongitude(findMyPlace.getPlaceLongitude())
+                .placeCategoryCode(findMyPlace.getPlaceCategoryCode())
+                .placePhoneNumber(findMyPlace.getPlacePhoneNumber())
+                .icon(findMyPlace.getIcon())
+                .familyCode(findMyPlace.getFamilyCode())
+                .addressName(findMyPlace.getAddressName())
+                .addressRoadName(findMyPlace.getAddressRoadName())
+                .placeCode(findMyPlace.getPlaceCode())
+                .build();
+    }
+}

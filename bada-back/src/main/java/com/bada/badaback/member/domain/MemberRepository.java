@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:11ebcb0fa380b086f9c7789f146c10008a728367c488789a8b06940d43ba1758
-size 710
+package com.bada.badaback.member.domain;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    Optional<Member> findByEmailAndSocial(String email, SocialType social);
+
+    boolean existsByEmailAndSocial(String email, SocialType social);
+
+    Optional<Member> findByEmail(String email);
+
+    @Query("select distinct m from Member m where m.familyCode = :familyCode order by m.createdAt desc")
+    List<Member> familyList(@Param("familyCode") String familyCode);
+}

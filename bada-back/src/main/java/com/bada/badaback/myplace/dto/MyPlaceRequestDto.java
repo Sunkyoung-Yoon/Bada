@@ -1,24 +1,3 @@
-package com.bada.badaback.myplace.dto;
-
-import jakarta.validation.constraints.NotBlank;
-
-public record MyPlaceRequestDto(
-        @NotBlank(message = "이름은 필수입니다.")
-        String placeName,
-        @NotBlank(message = "위도는 필수입니다.")
-        String placeLatitude,
-        @NotBlank(message = "경도는 필수입니다.")
-        String placeLongitude,
-        String placeCategoryCode,
-        String placePhoneNumber,
-        @NotBlank(message = "아이콘번호는 필수입니다.")
-        String icon,
-        @NotBlank(message = "지번 주소는 필수입니다.")
-        String addressName,
-        @NotBlank(message = "도로명 주소는 필수입니다.")
-        String addressRoadName,
-
-        @NotBlank(message = "장소 고유 번호는 필수입니다.")
-        String placeCode
-) {
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2ec6158f932ab7cdb50a7a4798c149a39c6b01458a58499bd2702a74a2b866ca
+size 835

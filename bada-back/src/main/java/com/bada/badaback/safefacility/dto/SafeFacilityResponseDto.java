@@ -5,20 +5,20 @@ import lombok.Builder;
 
 @Builder
 public record SafeFacilityResponseDto(
-        String startX,
-        String startY,
-        String endX,
-        String endY,
+        double startX,
+        double startY,
+        double endX,
+        double endY,
         String passList
 ) {
     public static SafeFacilityResponseDto from(Point start,
                                         Point end,
                                         String passList){
         return SafeFacilityResponseDto.builder()
-                .startX(start.getLongitude().toString())
-                .startY(start.getLatitude().toString())
-                .endX(end.getLongitude().toString())
-                .endY(end.getLatitude().toString())
+                .startX(start.getLongitude())
+                .startY(start.getLatitude())
+                .endX(end.getLongitude())
+                .endY(end.getLatitude())
                 .passList(passList)
                 .build();
     }

@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0cade75e0d2ddd4dbf8995513f0f8a37c7e32dd75a9197579b361cfa0937d272
-size 803
+package com.bada.badaback.state.dto;
+
+import com.bada.badaback.state.domain.State;
+import lombok.Builder;
+
+@Builder
+public record StateResponseDto(
+        String startLat,
+        String startLong,
+        String endLat,
+        String endLong,
+        String nowLat,
+        String nowLong,
+        Long childId
+) {
+    public static StateResponseDto from (State state){
+        return StateResponseDto.builder()
+                .startLat(state.getStartLatitude())
+                .startLong(state.getStartLongitude())
+                .endLat(state.getEndLatitude())
+                .endLong(state.getEndLongitude())
+                .nowLat(state.getNowLatitude())
+                .nowLong(state.getNowLongitude())
+                .childId(state.getMember().getId())
+                .build();
+    }
+}

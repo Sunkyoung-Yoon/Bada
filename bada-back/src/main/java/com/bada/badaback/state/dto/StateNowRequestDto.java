@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ec8999307fc42da1800611ae5f221793fca1835a239e00eb020f0132b2488697
-size 302
+package com.bada.badaback.state.dto;
+
+import jakarta.validation.constraints.NotBlank;
+
+public record StateNowRequestDto(
+        @NotBlank(message = "현재 위도는 필수입니다.")
+        String nowLat,
+        @NotBlank(message = "현재 경도는 필수입니다.")
+        String nowLong
+){
+}

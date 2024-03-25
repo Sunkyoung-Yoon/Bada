@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +24,7 @@ public class SafeFacilityController {
     private final SafeFacilityService safeFacilityService;
     private final MemberFindService memberFindService;
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<SafeFacilityResponseDto> getPath(@ExtractPayload Long memberId, @RequestBody @Valid SafeFacilityRequestDto safeFacilityRequestDto) throws IOException {
         //회원가입되어 있는 멤버인지 확인
         Member member = memberFindService.findById(memberId);

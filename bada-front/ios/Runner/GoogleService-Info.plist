@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e64fecc94111e48a441da500b62453968bf648b1341c71dbabd8d8a9bb4db25d
-size 868
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDRpeTFgwSIcGgfKs6htrdqfzjDLHeSBqg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>443600802362</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.b207personal</string>
+	<key>PROJECT_ID</key>
+	<string>bada-1c6f7</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bada-1c6f7.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:443600802362:ios:d566189eafd0ba6bea1b03</string>
+</dict>
+</plist>

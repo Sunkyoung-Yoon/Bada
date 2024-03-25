@@ -1,3 +1,42 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5bb2d2015174c0ff8c5f1db78110845b80ba399b1ecf6ec9352a4b64305ee252
-size 910
+[
+  {
+    "place_id": 10001,
+    "place_name": "Green Park",
+    "place_latitude": "51.5033",
+    "place_longitude": "-0.1276",
+    "icon": "tree",
+    "family_code": "PARK"
+  },
+  {
+    "place_id": 10002,
+    "place_name": "Sunshine Beach",
+    "place_latitude": "26.7000",
+    "place_longitude": "-80.0366",
+    "icon": "beach",
+    "family_code": "BEACH"
+  },
+  {
+    "place_id": 10003,
+    "place_name": "Mountain View",
+    "place_latitude": "37.3861",
+    "place_longitude": "-122.0839",
+    "icon": "mountain",
+    "family_code": "MTN"
+  },
+  {
+    "place_id": 10004,
+    "place_name": "River Side",
+    "place_latitude": "40.7128",
+    "place_longitude": "-74.0060",
+    "icon": "river",
+    "family_code": "RIVER"
+  },
+  {
+    "place_id": 10005,
+    "place_name": "Old Town Square",
+    "place_latitude": "50.0875",
+    "place_longitude": "14.4213",
+    "icon": "square",
+    "family_code": "SQ"
+  }
+]

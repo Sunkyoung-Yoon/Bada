@@ -1,3 +1,48 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6c5d62488873c95017ade394defc60615eb9ff5c93895dfd8069982657ba7dc8
-size 1132
+{
+  "project_info": {
+    "project_number": "443600802362",
+    "project_id": "bada-1c6f7",
+    "storage_bucket": "bada-1c6f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443600802362:android:2841f9c6f121ddb3ea1b03",
+        "android_client_info": {
+          "package_name": "com.example.flutter_practice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFKCLeiYUQ8zx0ocKSR5TCZCmEXHBcWlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443600802362:android:c23ad4740db927c2ea1b03",
+        "android_client_info": {
+          "package_name": "com.ssafy.bada"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFKCLeiYUQ8zx0ocKSR5TCZCmEXHBcWlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

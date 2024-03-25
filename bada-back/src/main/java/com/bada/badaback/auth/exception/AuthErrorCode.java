@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:acedb5f905525975677003fc1ec0d5421b72a693c590335ef2f6a5f5dfb1b83f
-size 1094
+package com.bada.badaback.auth.exception;
+
+import com.bada.badaback.global.exception.ErrorCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+@Getter
+@RequiredArgsConstructor
+public enum AuthErrorCode implements ErrorCode {
+    AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_001", "토큰의 유효기간이 만료되었습니다."),
+    AUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_002", "토큰이 유효하지 않습니다."),
+    INVALID_PERMISSION(HttpStatus.FORBIDDEN, "AUTH_003", "권한이 없습니다. 로그인 먼저 해주세요."),
+    AUTHCODE_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_004", "인증코드 정보를 찾을 수 없습니다."),
+    AUTH_EXPIRED_AUTHCODE(HttpStatus.NOT_FOUND, "AUTH_005", "인증코드의 유효기간이 만료되었습니다."),
+    MEMBER_IS_NOT_AUTHCODE_MEMBER(HttpStatus.NOT_FOUND, "AUTH_006", "인증코드에 해당하는 회원을 찾을 수 없습니다."),
+    ;
+
+    private final HttpStatus status;
+    private final String errorCode;
+    private final String message;
+}

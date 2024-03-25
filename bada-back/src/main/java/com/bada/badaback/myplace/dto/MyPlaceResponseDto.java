@@ -1,36 +1,3 @@
-package com.bada.badaback.myplace.dto;
-
-import com.bada.badaback.myplace.domain.MyPlace;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-
-@Builder
-public record MyPlaceResponseDto(
-        Long myPlaceId,
-        String placeName,
-        String placeLatitude,
-        String placeLongitude,
-        String placeCategoryCode,
-        String placeCategoryName,
-        String placePhoneNumber,
-        String icon,
-        String addressName,
-        String addressRoadName,
-        String placeCode
-) {
-    public static MyPlaceResponseDto from(MyPlace findMyplace) {
-        return MyPlaceResponseDto.builder()
-                .myPlaceId(findMyplace.getId())
-                .placeName(findMyplace.getPlaceName())
-                .placeLongitude(findMyplace.getPlaceLongitude())
-                .placeLatitude(findMyplace.getPlaceLatitude())
-                .placeCategoryCode(findMyplace.getPlaceCategoryCode())
-                .placeCategoryName(findMyplace.getPlaceCategoryName())
-                .placePhoneNumber(findMyplace.getPlacePhoneNumber())
-                .icon(findMyplace.getIcon())
-                .addressName(findMyplace.getAddressName())
-                .addressRoadName(findMyplace.getAddressRoadName())
-                .placeCode(findMyplace.getPlaceCode())
-                .build();
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5dd3d611366a6ed27d3d686af5d2c3c0a5c8a79051477bc3f6dc73680f2a88a2
+size 1377

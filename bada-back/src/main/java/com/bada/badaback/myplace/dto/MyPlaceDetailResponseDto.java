@@ -1,3 +1,37 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:87a4d3718a582e854bc7c2a566730111f4cd79e1de072756e7a54532fe12b3ed
-size 1391
+package com.bada.badaback.myplace.dto;
+
+import com.bada.badaback.myplace.domain.MyPlace;
+import lombok.Builder;
+
+@Builder
+public record MyPlaceDetailResponseDto(
+        Long myPlaceId,
+        String placeName,
+        String placeLatitude,
+        String placeLongitude,
+        String placeCategoryCode,
+        String placeCategoryName,
+        String placePhoneNumber,
+        String icon,
+        String familyCode,
+        String addressName,
+        String addressRoadName,
+        String placeCode
+) {
+    public static MyPlaceDetailResponseDto from(MyPlace findMyPlace) {
+        return MyPlaceDetailResponseDto.builder()
+                .myPlaceId(findMyPlace.getId())
+                .placeName(findMyPlace.getPlaceName())
+                .placeLatitude(findMyPlace.getPlaceLatitude())
+                .placeLongitude(findMyPlace.getPlaceLongitude())
+                .placeCategoryCode(findMyPlace.getPlaceCategoryCode())
+                .placeCategoryName(findMyPlace.getPlaceCategoryName())
+                .placePhoneNumber(findMyPlace.getPlacePhoneNumber())
+                .icon(findMyPlace.getIcon())
+                .familyCode(findMyPlace.getFamilyCode())
+                .addressName(findMyPlace.getAddressName())
+                .addressRoadName(findMyPlace.getAddressRoadName())
+                .placeCode(findMyPlace.getPlaceCode())
+                .build();
+    }
+}

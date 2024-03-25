@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
     String? accessToken = await _storage.read(key: 'accessToken');
     return accessToken != null;
   }
+  //로그인 시, 단순 storage reading이 아니라,
 
   @override
   void initState() {
@@ -69,20 +70,21 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Pretendard'),
-      home: FutureBuilder<bool>(
-        future: initializeApp(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data == true) {
-              return const HomeScreen();
-            } else {
-              return const LoginScreen();
-            }
-          } else {
-            return const LoadingScreen();
-          }
-        },
-      ),
+      home: const LoadingScreen(),
+      // FutureBuilder<bool>(
+      //   future: initializeApp(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.done) {
+      //       if (snapshot.data == true) {
+      //         return const HomeScreen();
+      //       } else {
+      //         return const LoginScreen();
+      //       }
+      //     } else {
+      //       return const LoadingScreen();
+      //     }
+      //   },
+      // ),
     );
   }
 }

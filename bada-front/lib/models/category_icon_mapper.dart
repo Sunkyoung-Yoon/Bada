@@ -27,4 +27,6 @@ class CategoryIconMapper {
     debugPrint('categoryGroupName: $categoryGroupName');
     return _iconUrlMapping[categoryGroupName] ?? 'assets/icons/building.png';
   }
+
+  static Map<String, String> get allIcons => _iconUrlMapping;
 }

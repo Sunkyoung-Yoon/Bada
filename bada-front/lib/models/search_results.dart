@@ -7,6 +7,7 @@ class SearchResultItem {
   final String phone;
   final String x;
   final String y;
+  final String id;
 
   SearchResultItem({
     required this.addressName,
@@ -17,6 +18,7 @@ class SearchResultItem {
     required this.phone,
     required this.x,
     required this.y,
+    required this.id,
   });
 
   factory SearchResultItem.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class SearchResultItem {
       phone: json['phone'],
       x: json['x'],
       y: json['y'],
+      id: json['id'],
     );
   }
 }

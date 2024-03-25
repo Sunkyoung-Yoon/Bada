@@ -53,8 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   bool hasProfile = await profileProvider.profileDbCheck();
                   // 아이디가 데이터베이스에 있는 경우
                   if (hasProfile) {
-                    profileProvider.saveProfileToStorage();
-                    Navigator.push(
+                    await profileProvider.saveProfileToStorage();
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const HomeScreen(),
@@ -62,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   } else {
                     // 아이디가 데이터베이스에 없는 경우
+                    // 소셜 로그인만 진행하고 DB에 없을 때 = 앱 처음 사용할 때
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -86,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   bool hasProfile = await profileProvider.profileDbCheck();
                   if (hasProfile) {
                     profileProvider.saveProfileToStorage();
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const HomeScreen(),

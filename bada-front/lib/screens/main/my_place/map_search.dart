@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bada/models/search_history.dart';
 import 'package:bada/models/search_results.dart';
 import 'package:bada/screens/main/my_place/search_map_screen.dart';
+import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,6 +113,7 @@ class _MapSearchState extends State<MapSearch> {
         backgroundColor: Colors.white,
       ),
       body: Container(
+        color: Colors.white,
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: Column(
           children: [
@@ -143,6 +145,21 @@ class _MapSearchState extends State<MapSearch> {
                 onSubmitted: (value) => setState(() {
                   _searchResult = fetchSearchResults(value);
                 }),
+              ),
+            ),
+            SizedBox(height: UIhelper.scaleHeight(context) * 10),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: UIhelper.scaleWidth(context) * 15,
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    '검색 기록',
+                    style: TextStyle(color: Colors.black26),
+                  ),
+                ],
               ),
             ),
             // 검색 결과를 보여주는 부분
@@ -185,13 +202,22 @@ class _MapSearchState extends State<MapSearch> {
                         final keyword = _searchHistory[index].keyword;
                         final date = _searchHistory[index].timestamp;
                         final formattedDate =
-                            '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+                            '${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
                         return ListTile(
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(keyword),
-                              Text(formattedDate),
+                              SizedBox(
+                                width: UIhelper.scaleWidth(context) * 280,
+                                child: Text(
+                                  keyword,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Text(
+                                formattedDate,
+                                style: const TextStyle(color: Colors.black26),
+                              ),
                             ],
                           ),
                           onTap: () {

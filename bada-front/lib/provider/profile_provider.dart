@@ -68,6 +68,7 @@ class ProfileProvider extends ChangeNotifier {
     // Check if the request was successful
     if (response.statusCode == 200) {
       // Decode the JSON response
+      debugPrint('카카오 로그인 됨 profile_provider 71번줄');
       final data = jsonDecode(utf8.decode(response.bodyBytes));
       _storage.write(key: 'accessToken', value: data['accessToken']);
       _storage.write(key: 'refreshToken', value: data['refreshToken']);
@@ -115,6 +116,55 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> _initKakaoProfile() async {
+    try {
+      // final viewModel = MainViewModel(KakaoLogin() as SocialLogin);
+      KakaoLogin kakaoLogin = KakaoLogin();
+      await kakaoLogin.login();
+      User? user = await UserApi.instance.me();
+      _nickname = user.kakaoAccount?.profile?.nickname;
+      _profileImage = user.kakaoAccount?.profile?.profileImageUrl;
+      _email = user.kakaoAccount?.email;
+      _isLogined = true;
+      _social = 'KAKAO';
+      saveProfileToStorage();
+    } catch (e) {
+      debugPrint('initProfile error: $e');
+    }
+  }
+
+  Future<void> _initNaverProfile() async {
+    try {
+      NaverLogin naverLogin = NaverLogin();
+      await naverLogin.login();
+      NaverAccountResult result = await FlutterNaverLogin.currentAccount();
+      _nickname = result.nickname;
+      _profileImage = result.profileImage;
+      _email = result.email;
+      _isLogined = true;
+      _social = 'NAVER';
+      saveProfileToStorage();
+    } catch (e) {
+      debugPrint('initProfile error: $e');
+    }
+  }
+
+  Future<void> logout() async {
+    await _storage.deleteAll();
+
+    // _memberId = null;
+    _nickname = null;
+    _profileImage = null;
+    _email = null;
+    _phone = null;
+    _social = null;
+    _createdAt = null;
+    _familyName = null;
+    _isLogined = false;
+
+    notifyListeners();
+  }
+
   Future<void> saveProfileToStorage() async {
     // Fetch accessToken from secure storage
     final accessToken = await _storage.read(key: 'accessToken');
@@ -151,66 +201,5 @@ class ProfileProvider extends ChangeNotifier {
         'Failed to fetch profile data. Status code: ${response.statusCode}',
       );
     }
-  }
-
-  Future<void> _initKakaoProfile() async {
-    try {
-      // final viewModel = MainViewModel(KakaoLogin() as SocialLogin);
-      KakaoLogin kakaoLogin = KakaoLogin();
-      await kakaoLogin.login();
-      User? user = await UserApi.instance.me();
-      _nickname = user.kakaoAccount?.profile?.nickname;
-      _profileImage = user.kakaoAccount?.profile?.profileImageUrl;
-      _email = user.kakaoAccount?.email;
-      _isLogined = true;
-      _social = 'KAKAO';
-      saveProfileToStorage();
-    } catch (e) {
-      debugPrint('initProfile error: $e');
-    }
-  }
-
-  Future<void> _initNaverProfile() async {
-    try {
-      NaverLogin naverLogin = NaverLogin();
-      await naverLogin.login();
-      NaverAccountResult result = await FlutterNaverLogin.currentAccount();
-      _nickname = result.nickname;
-      _profileImage = result.profileImage;
-      _email = result.email;
-      _isLogined = true;
-      _social = 'NAVER';
-      saveProfileToStorage();
-    } catch (e) {
-      debugPrint('initProfile error: $e');
-    }
-  }
-
-  Future<void> logout() async {
-    // Delete all stored data
-    // await _storage.delete(key: _memberIdKey);
-    // await _storage.delete(key: _nicknameKey);
-    // await _storage.delete(key: _profileImageKey);
-    // await _storage.delete(key: _emailKey);
-    // await _storage.delete(key: _phoneKey);
-    // await _storage.delete(key: _socialKey);
-    // await _storage.delete(key: _isLoginedKey);
-    // await _storage.delete(key: _createdAtKey);
-    // await _storage.delete(key: _familyNameKey);
-    await _storage.deleteAll();
-
-    // Reset local variables to their default values
-    // _memberId = null;
-    _nickname = null;
-    _profileImage = null;
-    _email = null;
-    _phone = null;
-    _social = null;
-    _createdAt = null;
-    _familyName = null;
-    _isLogined = false;
-
-    // Notify listeners about changes to the model
-    notifyListeners();
   }
 }

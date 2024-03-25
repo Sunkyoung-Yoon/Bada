@@ -196,7 +196,7 @@ class _SettingsState extends State<Settings> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(userData['name'] ?? '이름 없음'),
+                  Text(userData['nickname'] ?? '이름 없음'),
                   Text(userData['phone'] ?? '전화번호 없음'),
                   Text(userData['email'] ?? '이메일 없음'),
                   Text('가입일: ${userData['createdAt'] ?? '미등록'}'),

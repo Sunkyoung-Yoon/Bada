@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:be6117d6f1b1a3fc75732167e80bc5254377fe3cfa2e7867ec442d38f14b2e3d
-size 446
+class SearchHistory {
+  String keyword;
+  DateTime timestamp;
+
+  SearchHistory({
+    required this.keyword,
+    required this.timestamp,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'keyword': keyword,
+        'timestamp': timestamp.toIso8601String(),
+      };
+
+  factory SearchHistory.fromJson(Map<String, dynamic> json) => SearchHistory(
+        keyword: json['keyword'],
+        timestamp: DateTime.parse(json['timestamp']),
+      );
+}

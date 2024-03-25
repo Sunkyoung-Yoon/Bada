@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d034d45c733ba84f215ae7b3d83a949506632e6a7b65b92b888601ec0bc839ff
-size 887
+import 'package:bada/provider/map_provider.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+
+class LocationUpdater {
+  final MapProvider mapProvider;
+  late KakaoMapController mapController;
+  Set<Marker> markers = {};
+
+  LocationUpdater({required this.mapProvider});
+
+  void setMapController(KakaoMapController controller) {
+    mapController = controller;
+  }
+
+  Future<void> updateCurrentLocation() async {
+    LatLng currentLocation = mapProvider.currentLocation;
+    markers.clear();
+    markers.add(
+      Marker(
+        markerId: 'current_location',
+        latLng: currentLocation,
+        width: 30,
+        height: 44,
+        offsetX: 15,
+        offsetY: 44,
+        markerImageSrc:
+            'https://w7.pngwing.com/pngs/96/889/png-transparent-marker-map-interesting-places-the-location-on-the-map-the-location-of-the-thumbnail.png',
+      ),
+    );
+  }
+}

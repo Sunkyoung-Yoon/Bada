@@ -24,11 +24,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   Future<void> _checkTokenAndNavigate() async {
-    await Future.delayed(const Duration(seconds: 2));
-
     String? accessToken = await _storage.read(key: 'accessToken');
 
+    await Future.delayed(const Duration(seconds: 2));
+
     if (accessToken == null) {
+      print('토큰 못잡음');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -41,6 +42,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       } else {
+        print('토큰 not valid');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -51,7 +53,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   Future<bool> _verifyToken(String token) async {
     final response = await http.get(
-      Uri.parse('https://j10b207.p.ssafy.io/api/member'),
+      Uri.parse('https://j10b207.p.ssafy.io/api/members'),
       headers: {
         'Authorization': 'Bearer $token',
       },
@@ -60,6 +62,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (response.statusCode == 200) {
       return true;
     } else {
+      print(response.statusCode);
       await _storage.delete(key: 'accessToken');
       return false;
     }

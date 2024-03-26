@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6de4641322ef157f58141b1ce29aa4c29c0888aa4e1b119ca18f804d165bee81
-size 557
+class DepartureDestination {
+  String pointKeyword;
+  double pointX;
+  double pointY;
+
+  DepartureDestination({
+    required this.pointKeyword,
+    required this.pointX,
+    required this.pointY,
+  });
+
+  factory DepartureDestination.fromJson(Map<String, dynamic> json) {
+    return DepartureDestination(
+      pointKeyword: json['pointKeyword'],
+      pointX: json['pointX'],
+      pointY: json['pointY'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'pointKeyword': pointKeyword,
+        'pointX': pointX,
+        'pointY': pointY,
+      };
+}

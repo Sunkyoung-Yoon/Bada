@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:196afdb763e154b2644904efc696e987cd75baf89de8b7beb107f182e64d9b4b
-size 578
+package com.bada.badaback.alarm.domain;
+
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AlarmRepository extends JpaRepository<AlarmLog, Long> {
+
+  @Query(nativeQuery = true, value = "select * from alarm_log a where a.member_id = :memberId")
+  List<AlarmLog> findAllAlarmLogsbyMemberId(@Param("memberId") Long memberId);
+
+}

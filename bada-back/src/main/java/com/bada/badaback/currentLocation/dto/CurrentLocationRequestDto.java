@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f8fc9170b3804fb9b8f68b44d3cbcfd3326443d9de9fd689604e2ee9104f4546
-size 350
+package com.bada.badaback.currentLocation.dto;
+
+import jakarta.validation.constraints.NotBlank;
+
+public record CurrentLocationRequestDto(
+        @NotBlank(message = "현재위치 위도는 필수입니다.")
+        String currentLatitude,
+        @NotBlank(message = "현재위치 경도는 필수입니다.")
+        String currentLongitude
+) {
+}

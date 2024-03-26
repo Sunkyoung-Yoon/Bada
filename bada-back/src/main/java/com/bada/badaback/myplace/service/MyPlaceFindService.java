@@ -1,21 +1,3 @@
-package com.bada.badaback.myplace.service;
-
-import com.bada.badaback.global.exception.BaseException;
-import com.bada.badaback.myplace.domain.MyPlace;
-import com.bada.badaback.myplace.domain.MyPlaceRepository;
-import com.bada.badaback.myplace.exception.MyPlaceErrorCode;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-@Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
-public class MyPlaceFindService {
-    private final MyPlaceRepository myPlaceRepository;
-
-    public MyPlace findById(Long id) {
-        return myPlaceRepository.findById(id)
-                .orElseThrow(() -> BaseException.type(MyPlaceErrorCode.MYPLACE_NOT_FOUND));
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e38ac21c3a6a44a8b49bba1bda62fe9fbec59d58f5f6d2b22666513e46a52558
+size 763

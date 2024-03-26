@@ -1,11 +1,3 @@
-package com.bada.badaback.family.domain;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
-
-public interface FamilyRepository extends JpaRepository<Family, Long> {
-    boolean existsByFamilyCode(String familyCode);
-
-    Optional<Family> findByFamilyCode(String familyCode);
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:edf1000f9de8ce9d911c62e2ba7d87a668e01fd20aaa8ef8800203edea87f94a
+size 317

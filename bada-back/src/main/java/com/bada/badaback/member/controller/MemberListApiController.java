@@ -1,24 +1,3 @@
-package com.bada.badaback.member.controller;
-
-import com.bada.badaback.global.annotation.ExtractPayload;
-import com.bada.badaback.member.dto.MemberListResponseDto;
-import com.bada.badaback.member.service.MemberListService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@Tag(name = "FamilyList", description = "MemberListApiController")
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/family")
-public class MemberListApiController {
-    private final MemberListService memberListService;
-
-    @GetMapping
-    public ResponseEntity<MemberListResponseDto> familyList(@ExtractPayload Long memberId) {
-        return ResponseEntity.ok(memberListService.familyList(memberId));
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:aa697082b2f1c3b0e237f7a96bd0e4eb264fb9c589ba5ea90275ca3790cc2d9e
+size 968

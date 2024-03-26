@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fca3c80d39cff7d4fb74b5082bbfb59ad9e572cdb99857bb2ba64d240f78c8a8
-size 299
+package com.bada.badaback.route.domain;
+
+import com.bada.badaback.member.domain.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface RouteRepository extends JpaRepository<Route,Long> {
+    Optional<Route> findByMember(Member member);
+}

@@ -1,15 +1,3 @@
-package com.bada.badaback.auth.dto;
-
-import jakarta.validation.constraints.NotBlank;
-
-public record AuthJoinChildRequestDto(
-        @NotBlank(message = "이름은 필수입니다.")
-        String name,
-        String phone,
-        String profileUrl,
-        @NotBlank(message = "인증코드는 필수입니다.")
-        String code,
-        @NotBlank(message = "fcmToken은 필수입니다.")
-        String fcmToken
-) {
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:9c7a0e2869bbec4204ded0ddb1b9f5ae2a4239439c945e813e174e033c753aa3
+size 428

@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8aab519df9c9c8111d724435cfb89278e9c0bf20bef16a2f88be6eeb47035e65
-size 357
+package com.bada.badaback.safefacility.domain;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@Builder
+@ToString
+public class Point {
+    private double latitude;
+    private double longitude;
+
+    public Point(double latitude, double longitude){
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+}

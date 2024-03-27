@@ -1,48 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 
 class PathMap extends StatefulWidget {
+  // TODO : 경로 List 받아오기 및 경로 폴리라인 그리기
   const PathMap({super.key});
 
   @override
   State<PathMap> createState() => _PathMapState();
 }
 
-// TODO : 기존 경로를 불러오는 기능 구현
 class _PathMapState extends State<PathMap> {
-  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-
-  void pathRequest() async {
-    var accessToken = await secureStorage.read(key: 'accessToken');
-    var url = Uri.parse('https://j10b207.p.ssafy.io/api');
-    var response = await http.get(
-      url,
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      print('서버로부터 응답 성공: ${response.body}');
-    } else {
-      print('요청 실패: ${response.statusCode}');
-    }
-  }
+  late KakaoMapController mapController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('기존 경로'),
-        centerTitle: true,
+        title: const Text('경로 추천'),
       ),
-      body: Container(
-        child: const Column(
-          children: [
-            Text('기존 경로가 없습니다.'),
-          ],
-        ),
+      body: Stack(
+        // TODO : 아이의 정보를 받아오기 POST요청 및 그 숫자만큼 CircleAvatar 생성
+        // TODO : circleAvatar를 터치하면 아이의 위치를 표시할 수 있도록 함
+        children: [
+          KakaoMap(
+            onMapCreated: (controller) {
+              mapController = controller;
+            },
+          ),
+          Positioned(
+            right: 20, // 오른쪽으로부터 20px 떨어진 위치
+            top: 20, // 상단으로부터 20px 떨어진 위치
+            child: GestureDetector(
+              onTap: () {
+                debugPrint("CircleAvatar 터치!");
+              },
+              child: const CircleAvatar(
+                backgroundColor: Colors.blue,
+                child: Icon(Icons.person),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

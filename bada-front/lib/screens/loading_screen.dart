@@ -70,12 +70,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-
-    Provider.of<ScreenSizeModel>(context, listen: false).screenWidth =
-        screenSize.width;
-    Provider.of<ScreenSizeModel>(context, listen: false).screenHeight =
-        screenSize.height;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(

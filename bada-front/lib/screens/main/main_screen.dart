@@ -1,5 +1,6 @@
 import 'package:bada/screens/main/my_family.dart';
 import 'package:bada/screens/main/my_place.dart';
+import 'package:bada/screens/main/path_recommend/searching_path.dart';
 import 'package:bada/screens/main/settings.dart';
 import 'package:bada/screens/main/testing/testing.dart';
 import 'package:bada/widgets/buttons.dart';
@@ -114,7 +115,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 Button714_300(
                   label: '경로 추천 받기',
                   buttonImage: Image.asset('assets/img/map-phone.png'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SearchingPath()),
+                    );
+                  },
                 ),
                 SizedBox(
                   height: UIhelper.scaleHeight(context) * 15,

@@ -1,4 +1,6 @@
+import 'package:bada/api_request/member_api.dart';
 import 'package:bada/provider/profile_provider.dart';
+import 'package:bada/screens/login/initial_screen.dart';
 import 'package:bada/screens/login/login_screen.dart';
 import 'package:bada/screens/main/setting/alarm_setting.dart';
 import 'package:bada/screens/main/setting/setting_list.dart';
@@ -149,8 +151,42 @@ class _SettingsState extends State<Settings> {
                         ),
                         actions: <Widget>[
                           TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
+                            onPressed: () async {
+                              MembersApi membersApi = MembersApi();
+
+                              try {
+                                await Provider.of<ProfileProvider>(
+                                  context,
+                                  listen: false,
+                                ).logout();
+
+                                await membersApi.deleteMember();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const InitialScreen(),
+                                  ),
+                                );
+                              } catch (error) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('에러'),
+                                      content: const Text(
+                                        '회원탈퇴에 실패하였습니다. 문제가 계속 발생되면 000@ssafy.com으로 문의 주시기 바랍니다',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: const Text('확인'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             },
                             child: const Text('탈퇴하기'),
                           ),
@@ -196,9 +232,9 @@ class _SettingsState extends State<Settings> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(userData['nickname'] ?? '이름 없음'),
-                  Text(userData['phone'] ?? '전화번호 없음'),
-                  Text(userData['email'] ?? '이메일 없음'),
+                  Text("이름: ${userData['nickname']}"),
+                  Text("전화번호: ${userData['phone']}"),
+                  Text("이메일: ${userData['email']}"),
                   Text('가입일: ${userData['createdAt'] ?? '미등록'}'),
                 ],
               ),

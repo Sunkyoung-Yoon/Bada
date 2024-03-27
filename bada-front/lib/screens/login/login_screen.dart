@@ -4,8 +4,10 @@ import 'package:bada/screens/login/initial_screen.dart';
 import 'package:bada/screens/main/main_screen.dart';
 import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:provider/provider.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,6 +17,58 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  bool _isPhone = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPhone().then((hasPhone) {
+      if (mounted) {
+        setState(() {
+          _isPhone = hasPhone;
+        });
+      }
+    }).catchError((error) {
+      print('개씨발왜안대');
+    });
+  }
+
+  Future<bool> _checkPhone() async {
+    String? phone = await _storage.read(key: 'phone');
+    return phone != null;
+  }
+
+  // 사용자에게 휴대폰 번호 입력을 요청하는 함수
+  Future<void> requestPhoneNumber(
+    BuildContext context,
+    ProfileProvider profileProvider,
+  ) async {
+    TextEditingController phoneNumberController = TextEditingController();
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("휴대폰 번호 입력"),
+          content: TextField(
+            controller: phoneNumberController,
+            decoration: const InputDecoration(hintText: "휴대폰 번호"),
+            keyboardType: TextInputType.phone,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("확인"),
+              onPressed: () {
+                profileProvider.setPhone(phoneNumberController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
@@ -45,10 +99,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               GestureDetector(
                 onTap: () async {
-                  print('카카오 로그인할 때 작성 해야하는 kakao sdk 키 해쉬');
-                  print(await KakaoSdk.origin);
+                  String? phone = await _storage.read(key: 'phone');
 
                   LoginPlatform loginPlatform = LoginPlatform.kakao;
+                  if (_isPhone || phone == null) {
+                    await requestPhoneNumber(context, profileProvider);
+                  }
                   await profileProvider.initProfile(loginPlatform);
                   bool hasProfile = await profileProvider.profileDbCheck();
                   // 아이디가 데이터베이스에 있는 경우
@@ -83,6 +139,11 @@ class _LoginScreenState extends State<LoginScreen> {
               GestureDetector(
                 onTap: () async {
                   LoginPlatform loginPlatform = LoginPlatform.naver;
+                  String? phone = await _storage.read(key: 'phone');
+
+                  if (_isPhone || phone == null) {
+                    await requestPhoneNumber(context, profileProvider);
+                  }
                   await profileProvider.initProfile(loginPlatform);
                   bool hasProfile = await profileProvider.profileDbCheck();
                   if (hasProfile) {

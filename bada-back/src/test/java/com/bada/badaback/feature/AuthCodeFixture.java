@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:41332c5428215f9c7e5515365bf606c7de53c8223b9b5fc06b6f692787d7a7ed
-size 455
+package com.bada.badaback.feature;
+
+import com.bada.badaback.auth.domain.AuthCode;
+import com.bada.badaback.member.domain.Member;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum AuthCodeFixture {
+    AUTHCODE_0("AB1111"),
+    AUTHCODE_1("AB2222")
+    ;
+
+    private final String code;
+
+    public AuthCode toAuthCode(Member member) {
+        return AuthCode.createAuthCode(member, code);
+    }
+}

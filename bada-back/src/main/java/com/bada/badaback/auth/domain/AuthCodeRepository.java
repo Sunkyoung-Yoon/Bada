@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:538adfd429dd71be7ce0332d22c14329baf48fc404415536d36121708268b9fb
-size 649
+package com.bada.badaback.auth.domain;
+
+import com.bada.badaback.member.domain.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
+
+public interface AuthCodeRepository extends JpaRepository<AuthCode, Long> {
+    boolean existsByMemberId(Long memberId);
+
+    Optional<AuthCode> findByMemberId(Long memberId);
+
+    @Query("select distinct m from AuthCode ac inner join Member m on ac.member.id = m.id where ac.code = :code")
+    Optional<Member> findMemberByCode(@Param("code") String code);
+}
+

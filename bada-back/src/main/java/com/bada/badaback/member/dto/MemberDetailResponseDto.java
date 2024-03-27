@@ -1,36 +1,3 @@
-package com.bada.badaback.member.dto;
-
-import com.bada.badaback.member.domain.Member;
-import lombok.Builder;
-
-import java.time.LocalDateTime;
-
-@Builder
-public record MemberDetailResponseDto(
-        Long memberId,
-        String name,
-        String phone,
-        String email,
-        String social,
-        String profileUrl,
-        LocalDateTime createdAt,
-        String familyCode,
-        int movingState,
-        String fcmToken
-
-) {
-    public static MemberDetailResponseDto from(Member findMember) {
-        return MemberDetailResponseDto.builder()
-                .memberId(findMember.getId())
-                .name(findMember.getName())
-                .phone(findMember.getPhone())
-                .email(findMember.getEmail())
-                .social(findMember.getSocial().getSocialType())
-                .profileUrl(findMember.getProfileUrl())
-                .familyCode(findMember.getFamilyCode())
-                .createdAt(findMember.getCreatedAt())
-                .movingState(findMember.getMovingState())
-                .fcmToken(findMember.getFcmToken())
-                .build();
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:98e624b3d122b41cdd23fd8a616876862a6255c664c95f9f8ccb0c19a4010329
+size 1202

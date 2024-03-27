@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b78f2f5ef0dbb75829b5a3bf43102244ca4773da3377f714ed7a1a99b8831724
-size 557
+package com.bada.badaback.fcm.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class FcmMessageDto {
+  private boolean validateOnly;
+  private FcmMessageDto.Message message;
+
+  @Builder
+  @AllArgsConstructor
+  @Getter
+  public static class Message {
+    private FcmMessageDto.Notification notification;
+    private String token;
+  }
+
+  @Builder
+  @AllArgsConstructor
+  @Getter
+  public static class Notification {
+    private String title;
+    private String body;
+    private String image;
+  }
+}

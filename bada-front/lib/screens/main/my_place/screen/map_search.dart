@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bada/models/search_history.dart';
 import 'package:bada/models/search_results.dart';
-import 'package:bada/screens/main/my_place/search_map_screen.dart';
+import 'package:bada/screens/main/my_place/screen/search_map_screen.dart';
 import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +23,7 @@ class _MapSearchState extends State<MapSearch> {
   final TextEditingController _controller = TextEditingController();
   Future<List<SearchResultItem>>? _searchResult;
   List<SearchHistory> _searchHistory = [];
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -41,6 +42,9 @@ class _MapSearchState extends State<MapSearch> {
     );
 
     if (response.statusCode == 200) {
+      setState(
+        () => _isSearching = true,
+      );
       List<dynamic> jsonList = json.decode(response.body)['documents'];
       List<SearchResultItem> items = jsonList
           .map((jsonItem) => SearchResultItem.fromJson(jsonItem))
@@ -156,15 +160,25 @@ class _MapSearchState extends State<MapSearch> {
               padding: EdgeInsets.symmetric(
                 horizontal: UIhelper.scaleWidth(context) * 15,
               ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    '검색 기록',
-                    style: TextStyle(color: Colors.black26),
-                  ),
-                ],
-              ),
+              child: _isSearching
+                  ? const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '검색 결과',
+                          style: TextStyle(color: Colors.black26),
+                        ),
+                      ],
+                    )
+                  : const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '검색 기록',
+                          style: TextStyle(color: Colors.black26),
+                        ),
+                      ],
+                    ),
             ),
             // 검색 결과를 보여주는 부분
             Expanded(

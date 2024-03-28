@@ -1,5 +1,5 @@
-import 'package:bada/screens/main/my_family/alarm_list.dart';
-import 'package:bada/screens/main/my_family/child_setting.dart';
+import 'package:bada/screens/main/my_family/screen/alarm_list.dart';
+import 'package:bada/screens/main/my_family/screen/child_setting.dart';
 import 'package:bada/widgets/buttons.dart';
 import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';

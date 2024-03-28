@@ -20,6 +20,7 @@ class CategoryIconMapper {
     '카페': 'assets/icons/cafe.png',
     '병원': 'assets/icons/hospital.png',
     '약국': 'assets/icons/drugstore.png',
+    '빌딩': 'assets/icons/building.png',
     // 여기에 더 많은 카테고리와 아이콘 URL 매핑을 추가할 수 있습니다.
   };
 

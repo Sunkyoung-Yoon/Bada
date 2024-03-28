@@ -1,5 +1,5 @@
 // lib/config/router_config.dart
-import 'package:bada/screens/loading_screen.dart';
+import 'package:bada/loading_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final routerConfig = GoRouter(

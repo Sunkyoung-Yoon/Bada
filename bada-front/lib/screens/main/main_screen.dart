@@ -1,8 +1,7 @@
-import 'package:bada/screens/main/my_family.dart';
-import 'package:bada/screens/main/my_place.dart';
+import 'package:bada/screens/main/my_family/my_family.dart';
+import 'package:bada/screens/main/my_place/my_place.dart';
 import 'package:bada/screens/main/path_recommend/searching_path.dart';
-import 'package:bada/screens/main/settings.dart';
-import 'package:bada/screens/main/testing/testing.dart';
+import 'package:bada/screens/main/setting/settings.dart';
 import 'package:bada/widgets/buttons.dart';
 import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SearchingPath()),
+                        builder: (context) => const SearchingPath(),
+                      ),
                     );
                   },
                 ),
@@ -137,18 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const Settings(),
-                          ),
-                        );
-                      },
-                    ),
-                    Button330_220(
-                      label: '테스트 전용',
-                      buttonImage: Lottie.asset('assets/lottie/settings.json'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Test(),
                           ),
                         );
                       },

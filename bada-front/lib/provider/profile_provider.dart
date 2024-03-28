@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bada/models/user_profile.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:bada/login/kakao_login.dart';
@@ -25,7 +26,6 @@ class ProfileProvider extends ChangeNotifier {
       _social,
       _createdAt,
       _familyName;
-  bool _isLogined = false;
 
   // String? get memberId => _memberId;
   String? get nickname => _nickname;
@@ -35,7 +35,6 @@ class ProfileProvider extends ChangeNotifier {
   String? get social => _social;
   String? get createdAt => _createdAt;
   String? get familyName => _familyName;
-  bool get isLogined => _isLogined;
 
   // Define keys for storage
   // final _memberIdKey = 'memberId';
@@ -46,7 +45,6 @@ class ProfileProvider extends ChangeNotifier {
   final _socialKey = 'social';
   final _createdAtKey = 'createdAt';
   final _familyNameKey = 'familyName';
-  final _isLoginedKey = 'isLogined';
 
   Future<bool> profileDbCheck() async {
     // requestBody 설정
@@ -72,6 +70,7 @@ class ProfileProvider extends ChangeNotifier {
       final data = jsonDecode(utf8.decode(response.bodyBytes));
       _storage.write(key: 'accessToken', value: data['accessToken']);
       _storage.write(key: 'refreshToken', value: data['refreshToken']);
+
       debugPrint('profileDbCheck data: $data');
       return true;
     } else if (response.statusCode == 204) {
@@ -85,8 +84,12 @@ class ProfileProvider extends ChangeNotifier {
     return false;
   }
 
-  void setPhone(String phone) {
+  Future<void> setPhoneAndFamilyName(
+    String phone,
+    String familyName,
+  ) async {
     _phone = phone;
+    _familyName = familyName;
     notifyListeners();
   }
 
@@ -102,7 +105,6 @@ class ProfileProvider extends ChangeNotifier {
         break;
     }
     // TODO : memberID 가져오기(FCM용 기기ID)
-    // debugPrint('휴대폰 번호@@@: $phone');
     // saveProfileToStorage();
     notifyListeners();
   }
@@ -116,7 +118,6 @@ class ProfileProvider extends ChangeNotifier {
     _social = await _storage.read(key: _socialKey);
     _createdAt = await _storage.read(key: _createdAtKey);
     _familyName = await _storage.read(key: _familyNameKey);
-    _isLogined = await _storage.read(key: _isLoginedKey) == 'true';
     notifyListeners();
   }
 
@@ -129,7 +130,6 @@ class ProfileProvider extends ChangeNotifier {
       _nickname = user.kakaoAccount?.profile?.nickname;
       _profileImage = user.kakaoAccount?.profile?.profileImageUrl;
       _email = user.kakaoAccount?.email;
-      _isLogined = true;
       _social = 'KAKAO';
     } catch (e) {
       debugPrint('initProfile error: $e');
@@ -144,7 +144,6 @@ class ProfileProvider extends ChangeNotifier {
       _nickname = result.nickname;
       _profileImage = result.profileImage;
       _email = result.email;
-      _isLogined = true;
       _social = 'NAVER';
     } catch (e) {
       debugPrint('initProfile error: $e');
@@ -162,9 +161,18 @@ class ProfileProvider extends ChangeNotifier {
     _social = null;
     _createdAt = null;
     _familyName = null;
-    _isLogined = false;
 
     notifyListeners();
+  }
+
+  Future<void> saveProfileToStorageWithoutRequest() async {
+    await _storage.write(key: 'nickname', value: _nickname);
+    await _storage.write(key: 'phone', value: _phone);
+    await _storage.write(key: 'email', value: _email);
+    await _storage.write(key: 'social', value: _social);
+    await _storage.write(key: 'createdAt', value: _createdAt);
+    await _storage.write(key: 'familyName', value: _familyName);
+    await _storage.write(key: 'profileImage', value: _profileImage);
   }
 
   Future<void> saveProfileToStorage() async {

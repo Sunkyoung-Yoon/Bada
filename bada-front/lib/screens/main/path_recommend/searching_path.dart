@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:bada/login/login_platform.dart';
-import 'package:bada/screens/main/path_recommend/path_map.dart';
+import 'package:bada/screens/main/path_recommend/screen/path_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:bada/screens/main/path_recommend/model/path_search_history.dart';
 import 'package:bada/models/search_results.dart';
-import 'package:bada/screens/main/path_recommend/search_place_for_path.dart';
+import 'package:bada/screens/main/path_recommend/screen/search_place_for_path.dart';
 
 class SearchingPath extends StatefulWidget {
   const SearchingPath({super.key});
@@ -55,61 +55,70 @@ class _SearchingPathState extends State<SearchingPath> {
     });
   }
 
-  void pathRequest() async {
-    var accessToken = await secureStorage.read(key: 'accessToken');
-    var url = Uri.parse('https://j10b207.p.ssafy.io/api/path');
-    var requestBody = json.encode({
-      "startX": _departureLongitude.toString(),
-      "startY": _departureLatitude.toString(),
-      "endX": _destinationLongitude.toString(),
-      "endY": _destinationLatitude.toString(),
-    });
-    var response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json', // Content-Type 헤더 설정
-        'Authorization': 'Bearer $accessToken',
-      },
-      body: requestBody,
-    );
+  Future<void> pathRequest() async {
+    try {
+      var accessToken = await secureStorage.read(key: 'accessToken');
+      var url = Uri.parse('https://j10b207.p.ssafy.io/api/path');
+      var requestBody = json.encode({
+        "startX": _departureLongitude.toString(),
+        "startY": _departureLatitude.toString(),
+        "endX": _destinationLongitude.toString(),
+        "endY": _destinationLatitude.toString(),
+      });
+      var response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json', // Content-Type 헤더 설정
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: requestBody,
+      );
+      debugPrint("액세스 토큰 : $accessToken");
+      debugPrint("요청 바디 : $requestBody");
 
-    if (response.statusCode == 200) {
-      debugPrint('서버로부터 응답 성공: ${response.body}');
-      // 경로 검색 기록 저장
-      final prefs = await SharedPreferences.getInstance();
-      if (_departureKeywordList.isEmpty) {
-        _departureKeywordList.add(_departureController.text);
-        _destinationKeywordList.add(_destinationController.text);
-        _departureLatitudeList.add(_departureLatitude.toString());
-        _departureLongitudeList.add(_departureLongitude.toString());
-        _destinationLatitudeList.add(_destinationLatitude.toString());
-        _destinationLongitudeList.add(_destinationLongitude.toString());
+      if (response.statusCode == 200) {
+        debugPrint('서버로부터 응답 성공: ${response.body}');
+        // 경로 검색 기록 저장
+        final prefs = await SharedPreferences.getInstance();
+        if (_departureKeywordList.isEmpty) {
+          _departureKeywordList.add(_departureController.text);
+          _destinationKeywordList.add(_destinationController.text);
+          _departureLatitudeList.add(_departureLatitude.toString());
+          _departureLongitudeList.add(_departureLongitude.toString());
+          _destinationLatitudeList.add(_destinationLatitude.toString());
+          _destinationLongitudeList.add(_destinationLongitude.toString());
+        } else {
+          _departureKeywordList.insert(0, _departureController.text);
+          _destinationKeywordList.insert(0, _destinationController.text);
+          _departureLatitudeList.insert(0, _departureLatitude.toString());
+          _departureLongitudeList.insert(0, _departureLongitude.toString());
+          _destinationLatitudeList.insert(0, _destinationLatitude.toString());
+          _destinationLongitudeList.insert(0, _destinationLongitude.toString());
+        }
+
+        prefs.setStringList('departureKeywordList', _departureKeywordList);
+        prefs.setStringList('destinationKeywordList', _destinationKeywordList);
+        prefs.setStringList('departureLatitudeList', _departureLatitudeList);
+        prefs.setStringList('departureLongitudeList', _departureLongitudeList);
+        prefs.setStringList(
+          'destinationLatitudeList',
+          _destinationLatitudeList,
+        );
+        prefs.setStringList(
+          'destinationLongitudeList',
+          _destinationLongitudeList,
+        );
+
+        // TODO : 경로 요청 API Response를 파라미터로 넘겨주어 PathMap으로 이동
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const PathMap()),
+        );
       } else {
-        _departureKeywordList.insert(0, _departureController.text);
-        _destinationKeywordList.insert(0, _destinationController.text);
-        _departureLatitudeList.insert(0, _departureLatitude.toString());
-        _departureLongitudeList.insert(0, _departureLongitude.toString());
-        _destinationLatitudeList.insert(0, _destinationLatitude.toString());
-        _destinationLongitudeList.insert(0, _destinationLongitude.toString());
+        debugPrint('요청 실패: ${response.statusCode}');
       }
-
-      prefs.setStringList('departureKeywordList', _departureKeywordList);
-      prefs.setStringList('destinationKeywordList', _destinationKeywordList);
-      prefs.setStringList('departureLatitudeList', _departureLatitudeList);
-      prefs.setStringList('departureLongitudeList', _departureLongitudeList);
-      prefs.setStringList('destinationLatitudeList', _destinationLatitudeList);
-      prefs.setStringList(
-        'destinationLongitudeList',
-        _destinationLongitudeList,
-      );
-
-      // TODO : 경로 요청 API Response를 파라미터로 넘겨주어 PathMap으로 이동
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const PathMap()),
-      );
-    } else {
-      debugPrint('요청 실패: ${response.statusCode}');
+    } catch (e) {
+      debugPrint('에러 발생: $e');
     }
   }
 
@@ -259,8 +268,8 @@ class _SearchingPathState extends State<SearchingPath> {
                   borderRadius: BorderRadius.circular(10), // 둥근 정도 조정
                 ),
               ),
-              onPressed: () {
-                pathRequest();
+              onPressed: () async {
+                await pathRequest();
               },
               child: const Text('경로 요청'),
             ),

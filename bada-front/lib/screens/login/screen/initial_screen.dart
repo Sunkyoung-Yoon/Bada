@@ -1,5 +1,5 @@
-import 'package:bada/screens/login/create_group.dart';
-import 'package:bada/screens/login/join_group.dart';
+import 'package:bada/screens/login/screen/create_group.dart';
+import 'package:bada/screens/login/screen/join_group.dart';
 import 'package:bada/widgets/buttons.dart';
 import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:bada/models/category_icon_mapper.dart';
-import 'package:bada/models/my_place_model.dart';
+import 'package:bada/screens/main/my_place/model/my_place_model.dart';
+import 'package:bada/screens/main/my_place/my_place.dart';
 import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,27 +10,21 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
 class AddPlace extends StatefulWidget {
-  final String addressName,
-      categoryGroupCode,
-      categoryGroupName,
-      placeName,
-      roadAddressName,
-      phone,
-      x,
-      y,
-      id;
+  final String addressName, placeName, x, y, id;
+  final String? categoryGroupCode, categoryGroupName, roadAddressName, phone;
+
   final VoidCallback onDataUpdate;
   const AddPlace({
     super.key,
     required this.id,
     required this.addressName,
     required this.placeName,
-    this.roadAddressName = '',
+    this.roadAddressName,
     required this.x,
     required this.y,
-    this.phone = '',
-    this.categoryGroupCode = '',
-    this.categoryGroupName = '',
+    this.phone,
+    this.categoryGroupCode,
+    this.categoryGroupName,
     required this.onDataUpdate,
   });
 
@@ -49,7 +44,8 @@ class _AddPlaceState extends State<AddPlace> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.placeName);
-    _selectedIcon = CategoryIconMapper.getIconUrl(widget.categoryGroupName);
+    _selectedIcon =
+        CategoryIconMapper.getIconUrl(widget.categoryGroupName ?? '빌딩');
     myPlaces = MyPlaceData.loadPlaces();
 
     myPlaces?.then((places) {
@@ -65,21 +61,41 @@ class _AddPlaceState extends State<AddPlace> {
     super.dispose();
   }
 
+  Future<void> back() async {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const MyPlace()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.placeName),
         centerTitle: true,
         backgroundColor: Colors.white,
+        titleSpacing: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_drop_down),
+          iconSize: deviceWidth * 0.08,
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: <Widget>[
+          // 여기서 오른쪽 여백을 추가합니다.
+          SizedBox(width: deviceWidth * 0.08),
+        ],
       ),
       body: Container(
         color: Colors.white,
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.fromLTRB(
+          deviceWidth * 0.1,
+          deviceHeight * 0.02,
+          deviceWidth * 0.1,
+          deviceHeight * 0.02,
+        ),
         child: Column(
           children: [
             Row(
@@ -90,7 +106,7 @@ class _AddPlaceState extends State<AddPlace> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 300,
+                      width: 200,
                       child: TextField(
                         controller: _titleController,
                       ),
@@ -143,19 +159,20 @@ class _AddPlaceState extends State<AddPlace> {
               children: [
                 if (!_checkPlace)
                   ElevatedButton(
-                    onPressed: () {
-                      _postPlace(
+                    onPressed: () async {
+                      await _postPlace(
                         placeName: _titleController.text,
                         placeLatitude: widget.x,
                         placeLongitude: widget.y,
-                        placeCategoryCode: widget.categoryGroupCode,
-                        placeCategoryName: widget.categoryGroupName,
-                        placePhoneNumber: widget.phone,
+                        placeCategoryCode: widget.categoryGroupCode ?? '',
+                        placeCategoryName: widget.categoryGroupName ?? '',
+                        placePhoneNumber: widget.phone ?? '',
                         icon: _selectedIcon,
                         addressName: widget.addressName,
-                        addressRoadName: widget.roadAddressName,
+                        addressRoadName: widget.roadAddressName ?? '',
                         placeCode: widget.id,
                       );
+                      await back();
                     },
                     child: const Text('추가하기'),
                   )
@@ -176,8 +193,13 @@ class _AddPlaceState extends State<AddPlace> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('분류: ${widget.categoryGroupName}'),
-                  Text('전화번호: ${widget.phone}'),
+                  widget.categoryGroupName != null &&
+                          widget.categoryGroupName != ''
+                      ? Text('분류: ${widget.categoryGroupName}')
+                      : const SizedBox(),
+                  widget.phone != null && widget.phone != ''
+                      ? Text('전화번호: ${widget.phone}')
+                      : const SizedBox(),
                 ],
               ),
             ),

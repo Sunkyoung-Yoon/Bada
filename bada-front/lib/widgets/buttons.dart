@@ -1,4 +1,4 @@
-import 'package:bada/screens/main/my_place/my_place_detail.dart';
+import 'package:bada/screens/main/my_place/screen/my_place_detail.dart';
 import 'package:bada/widgets/screensize.dart';
 import 'package:flutter/material.dart';
 
@@ -381,8 +381,25 @@ class MyPlaceButton extends StatefulWidget {
 class _MyPlaceButtonState extends State<MyPlaceButton> {
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => PlaceDetail(
+              placeName: widget.placeName,
+              icon: widget.icon,
+              myPlaceId: widget.myPlaceId,
+              addressName: widget.addressName,
+              placeLatitude: widget.placeLatitude,
+              placeLongitude: widget.placeLongitude,
+              onPlaceUpdate: widget.onPlaceUpdate,
+            ),
+          ),
+        );
+      },
       child: Container(
         width: UIhelper.scaleWidth(context) * 368,
         height: UIhelper.scaleHeight(context) * 80,
@@ -399,7 +416,12 @@ class _MyPlaceButtonState extends State<MyPlaceButton> {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          padding: EdgeInsets.fromLTRB(
+            deviceWidth * 0.05,
+            deviceHeight * 0.00,
+            deviceWidth * 0.00,
+            deviceHeight * 0.00,
+          ),
           child: Row(
             children: [
               Image.asset(
@@ -407,15 +429,26 @@ class _MyPlaceButtonState extends State<MyPlaceButton> {
                 height: UIhelper.scaleWidth(context) * 50,
               ),
               SizedBox(
-                width: UIhelper.scaleWidth(context) * 10,
+                width: UIhelper.scaleWidth(context) * 20,
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('이름: ${widget.placeName}'),
-                    const Text('주소: 대전광역시 유성구 덕명로 26'),
+                    Text(
+                      widget.placeName,
+                      style: const TextStyle(fontSize: 15),
+                      overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 때 ...으로 표시
+                      maxLines: 1, // 최대 표시 줄 수를 1로 설정
+                    ),
+                    SizedBox(height: UIhelper.scaleHeight(context) * 5),
+                    Text(
+                      widget.addressName,
+                      style: const TextStyle(fontSize: 12),
+                      overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 때 ...으로 표시
+                      maxLines: 1, // 최대 표시 줄 수를 1로 설정
+                    ),
                   ],
                 ),
               ),
@@ -435,9 +468,13 @@ class _MyPlaceButtonState extends State<MyPlaceButton> {
                     ),
                   );
                 },
-                child: const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 15,
+                child: const Align(
+                  // TextButton을 Align으로 감싸줍니다.
+                  alignment: Alignment.center, // 세로 방향 가운데 정렬
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 15,
+                  ),
                 ),
               ),
             ],

@@ -1,42 +1,45 @@
 import 'package:bada/models/category_icon_mapper.dart';
 import 'package:bada/provider/map_provider.dart';
-import 'package:bada/screens/main/my_place/add_place.dart';
-import 'package:bada/screens/main/path_recommend/model/departure_destination.dart';
+import 'package:bada/screens/main/my_place/screen/add_place.dart';
 import 'package:bada/widgets/longText_handler.dart';
 import 'package:bada/widgets/screensize.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bada/models/search_results.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart'; // SearchResultItem 모델 import 필요
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
 import 'package:kakao_map_plugin/kakao_map_plugin.dart';
 import 'package:marquee/marquee.dart'; // SearchResultItem 모델 import 필요
 
-class SearchMapForPathScreen extends StatefulWidget {
+class SearchMapScreen extends StatefulWidget {
   final SearchResultItem item;
   final String keyword;
-
-  const SearchMapForPathScreen({
+  final VoidCallback onDataUpdate;
+  const SearchMapScreen({
     super.key,
     required this.item,
     required this.keyword,
+    required this.onDataUpdate,
   });
 
   @override
-  State<SearchMapForPathScreen> createState() => _SearchMapForPathScreenState();
+  State<SearchMapScreen> createState() => _SearchMapScreenState();
 }
 
-class _SearchMapForPathScreenState extends State<SearchMapForPathScreen> {
+// TODO : 지도를 켰을 때 마지막으로 검색했던 위치로 이동하도록 수정
+class _SearchMapScreenState extends State<SearchMapScreen> {
   late KakaoMapController mapController;
   late MapProvider mapProvider;
   late LatLng searchedLocation;
   late String accessToken;
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-
+  late Marker marker;
   Set<Marker> markers = {};
 
-  // 검색 위치 업데이트
+  // 검색 위치 업데이트 및 검색 위치로 화면 이동
   Future<void> _updateSearchedLocation() async {
     LatLng searchedLocation =
         LatLng(double.parse(widget.item.y), double.parse(widget.item.x));
@@ -65,38 +68,38 @@ class _SearchMapForPathScreenState extends State<SearchMapForPathScreen> {
     Navigator.pop(context);
   }
 
-  // Future<void> sendPostRequest() async {
-  //   accessToken = await secureStorage.read(key: 'accessToken') ?? '';
-  //   debugPrint('accessToken: $accessToken');
+  Future<void> sendPostRequest() async {
+    accessToken = await secureStorage.read(key: 'accessToken') ?? '';
+    debugPrint('accessToken: $accessToken');
 
-  //   var url = Uri.parse('https://j10b207.p.ssafy.io/api/myplace');
+    var url = Uri.parse('https://j10b207.p.ssafy.io/api/myplace');
 
-  //   var headers = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer $accessToken',
-  //   };
-  //   var requestBody = jsonEncode({
-  //     "placeName": widget.item.placeName,
-  //     "placeLatitude": widget.item.y,
-  //     "placeLongitude": widget.item.x,
-  //     "placeCategoryCode": widget.item.categoryGroupCode,
-  //     "placeCategoryName": widget.item.categoryGroupName,
-  //     "placePhoneNumber": widget.item.phone,
-  //     "addressName": widget.item.addressName,
-  //     "addressRoadName": widget.item.roadAddressName,
-  //     // "placeCode": "placeCode",
-  //   });
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+    };
+    var requestBody = jsonEncode({
+      "placeName": widget.item.placeName,
+      "placeLatitude": widget.item.y,
+      "placeLongitude": widget.item.x,
+      "placeCategoryCode": widget.item.categoryGroupCode,
+      "placeCategoryName": widget.item.categoryGroupName,
+      "placePhoneNumber": widget.item.phone,
+      "addressName": widget.item.addressName,
+      "addressRoadName": widget.item.roadAddressName,
+      // "placeCode": "placeCode",
+    });
 
-  //   var response = await http.post(url, headers: headers, body: requestBody);
+    var response = await http.post(url, headers: headers, body: requestBody);
 
-  //   if (response.statusCode == 200) {
-  //     // 요청이 성공적으로 처리되었을 때의 로직
-  //     print('Request successful');
-  //   } else {
-  //     // 오류가 발생했을 때의 로직
-  //     print('Request failed with status: ${response.statusCode}.');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      // 요청이 성공적으로 처리되었을 때의 로직
+      print('Request successful');
+    } else {
+      // 오류가 발생했을 때의 로직
+      print('Request failed with status: ${response.statusCode}.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +119,24 @@ class _SearchMapForPathScreenState extends State<SearchMapForPathScreen> {
                   _updateSearchedLocation(); // 검색 위치 업데이트
                   moveToSearchedLocation(); // 검색 위치로 이동
                 },
+                // TODO : 지도를 클릭하면 마커가 생성되고 해당 위치의 위도와 경도를 검색하여 나온 정보를 표시하도록 수정
+                // onMapTap: ((latLng) async {
+                //   marker = Marker(
+                //     markerId: markers.length.toString(),
+                //     latLng: await mapController.getCenter(),
+                //     width: 30,
+                //     height: 44,
+                //     offsetX: 15,
+                //     offsetY: 44,
+                //   );
+                //   marker.latLng = latLng;
+
+                //   mapController.panTo(latLng);
+                //   setState(() {
+                //     markers.clear();
+                //     markers.add(marker);
+                //   });
+                // }),
                 markers: markers.toList(),
               ),
             ),
@@ -126,7 +147,7 @@ class _SearchMapForPathScreenState extends State<SearchMapForPathScreen> {
             left: 0,
             right: 0,
             child: Container(
-              padding: const EdgeInsets.all(8),
+              padding: EdgeInsets.all(deviceWidth * 0.05),
               child: GestureDetector(
                 onTap: () {
                   backToPreviousScreen();
@@ -217,14 +238,9 @@ class _SearchMapForPathScreenState extends State<SearchMapForPathScreen> {
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
                       onPressed: () {
-                        final result = DepartureDestination(
-                          pointKeyword: widget.item.placeName,
-                          pointX: double.parse(widget.item.x),
-                          pointY: double.parse(widget.item.y),
-                        );
-                        Navigator.pop(context, result);
+                        Navigator.of(context).push(_createRoute());
                       },
-                      child: const Text("확인"),
+                      child: const Text("추가하기"),
                     ),
                   ),
                 ],
@@ -233,6 +249,36 @@ class _SearchMapForPathScreenState extends State<SearchMapForPathScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => AddPlace(
+        placeName: widget.item.placeName,
+        addressName: widget.item.addressName,
+        roadAddressName: widget.item.roadAddressName,
+        categoryGroupName: widget.item.categoryGroupName,
+        categoryGroupCode: widget.item.categoryGroupCode,
+        phone: widget.item.phone,
+        x: widget.item.x,
+        y: widget.item.y,
+        id: widget.item.id,
+        onDataUpdate: widget.onDataUpdate,
+      ),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }

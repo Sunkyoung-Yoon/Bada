@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:60a4d205861a9ff3a91dcc782db557002604be4b3ee7ea81c623857f9fe164be
-size 645
+package com.bada.badaback.route.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
+
+@Builder
+public record TmapRequestDto(
+        @NotBlank(message = "출발 longitude는 필수입니다.")
+        String startX,
+        @NotBlank(message = "출발 latitude는 필수입니다.")
+        String startY,
+        @NotBlank(message = "도착 longitude는 필수입니다.")
+        String endX,
+        @NotBlank(message = "도착 latitude는 필수입니다.")
+        String endY,
+        String reqCoordType,
+        String resCoordType,
+        String startName,
+        String endName,
+        String passList
+) {
+}

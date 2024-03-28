@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dbd006771db1ca18766951d33ab3ee8551675713146d498d3b82b92d1acc40c1
-size 442
+package com.bada.badaback.safefacility.domain;
+
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
+public class Tile{
+    //해당 타일의 헥사곤 주소
+    private String HexAddr;
+    //안에 있는 cctv의 개수
+    public int cctvCount;
+    //주변 환경 변수
+    public int envir;
+    //출발지로부터의 거리
+    public long dist;
+
+    public Tile(String HexAddr) {
+        this.HexAddr = HexAddr;
+    }
+
+}

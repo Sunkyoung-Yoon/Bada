@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ee60bf8c997bd6841f12c14ee0cbaa481618975b10285189b908c761bc34171d
-size 639
+import 'package:flutter/material.dart';
+
+class UIhelper {
+  static double deviceWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
+  }
+
+  static double scaleWidth(BuildContext context) {
+    const designGuideWidth = 411.4;
+    final screenWidth = deviceWidth(context);
+    return (screenWidth / designGuideWidth);
+  }
+
+  static double deviceHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height;
+  }
+
+  static double scaleHeight(BuildContext context) {
+    const designGuideHeight = 843.4;
+    final screenHeight = deviceHeight(context);
+    return (screenHeight / designGuideHeight);
+  }
+}

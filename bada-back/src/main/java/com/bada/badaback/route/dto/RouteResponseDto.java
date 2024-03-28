@@ -1,25 +1,3 @@
-package com.bada.badaback.route.dto;
-
-import com.bada.badaback.route.domain.Route;
-import com.bada.badaback.safefacility.domain.Point;
-import lombok.Builder;
-
-import java.util.List;
-
-@Builder
-public record RouteResponseDto(
-        double startLng,
-        double startLat,
-        double endLng,
-        double endLat,
-        List<Point> pointList
-) {
-    public static RouteResponseDto from(Route route, List<Point> pointList) {
-        return RouteResponseDto.builder().startLng(Double.parseDouble(route.getStartLongitude()))
-                .startLat(Double.parseDouble(route.getStartLatitude()))
-                .endLng(Double.parseDouble(route.getEndLongitude()))
-                .endLat(Double.parseDouble(route.getEndLatitude()))
-                .pointList(pointList)
-                .build();
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:3400ea7abbfe750549b2e6143f6f4f0784c4bbc186c0eed29879165b4ca234ab
+size 716

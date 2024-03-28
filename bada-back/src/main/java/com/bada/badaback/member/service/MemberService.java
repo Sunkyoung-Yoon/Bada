@@ -78,9 +78,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMovingState(Long memberId) {
+    public void updateMovingState(Long memberId, int movingState) {
         Member findMember = memberFindService.findById(memberId);
-        findMember.updateMovingState();
+        findMember.updateMovingState(movingState);
     }
-
 }

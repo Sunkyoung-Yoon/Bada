@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0f5be9eb0ed744693650e91894370b4a8c753f7a02ab8dba1f9bcf04ad37502d
-size 1057
+package com.bada.badaback.alarmlog.controller;
+
+import com.bada.badaback.alarmlog.dto.AlarmLogResponseDto;
+import com.bada.badaback.alarmlog.service.AlarmLogService;
+import com.bada.badaback.global.annotation.ExtractPayload;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(value = "/api/alarmLog")
+@Slf4j
+@RequiredArgsConstructor
+public class AlarmLogController {
+
+  private final AlarmLogService alarmLogService;
+
+  @GetMapping  // alarm 이용
+  @ResponseBody
+  public ResponseEntity<List<AlarmLogResponseDto>> sendAlarm(@ExtractPayload Long memberId, @ExtractPayload Long childId) {
+    return ResponseEntity.ok().body(alarmLogService.getAllAlarmLogs(memberId, childId));
+  }
+
+}

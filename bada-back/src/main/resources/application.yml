@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eda66df7e308e66dfa33fdc221d29a8ee7df8e059b3b57cb15f6c6a8467b354a
-size 1356
+spring:
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: dialect=org.hibernate.dialect.MySQL8Dialect
+
+  #application-secret.yml
+  profiles:
+    include: secret
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${EC2_HOST}:3306/${DATABASE_NAME}
+    username: ${EC2_USERNAME}
+    password: ${EC2_PASSWORD}
+
+  # aws s3
+  cloud:
+    aws:
+      credentials:
+        accessKey: ${S3_ACCESS_KEY}
+        secretKey: ${S3_SECRET_KEY}
+      s3:
+        bucket: ${S3_BUCKET_NAME}
+      region:
+        static: ${S3_REGION_STATIC}
+      stack:
+        auto: false
+
+  kafka:
+    bootstrapAddress: ${EC2_HOST}:9092
+    consumer:
+      auto-offset-reset: earliest
+    topics:
+      now-topic: test-topic # alarm-topic
+      alarm-topic: alarm-topic
+
+
+
+springdoc:
+  swagger-ui:
+    groups-order: desc
+    tags-sorter: alpha
+    operations-sorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+    default-models-expand-depth: 2
+    default-model-expand-depth: 2
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  writer-with-default-pretty-printer: true
+  model-and-view-allowed: true
+  paths-to-match:
+    - /api/**

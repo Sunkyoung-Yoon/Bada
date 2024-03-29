@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6a2daeee0a2e25cab40bd05c86867065afdeb4398038a19794f6803896f361b4
-size 263
+{
+  "file_generated_by": "FlutterFire CLI",
+  "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
+  "GOOGLE_APP_ID": "1:981845180527:ios:6c41d516189197fb354d9a",
+  "FIREBASE_PROJECT_ID": "bada-kids",
+  "GCM_SENDER_ID": "981845180527"
+}

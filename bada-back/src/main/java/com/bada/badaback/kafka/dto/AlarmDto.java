@@ -1,28 +1,3 @@
-package com.bada.badaback.kafka.dto;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-
-// 임시 알람 DTO
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
-public class AlarmDto {
-
-  private String type;    // 알람 종류 : enum으로 생성하기
-  private Long memberId;  //
-  private String familyCode;
-  private String content;
-
-  private String latitude;
-  private String longitude;
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4e6e2939bfc82f542b4008d502f57e0a8dd1dac515a3f624e19a55b66091ee63
+size 722

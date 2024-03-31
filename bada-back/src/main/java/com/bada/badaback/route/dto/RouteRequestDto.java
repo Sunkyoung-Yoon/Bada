@@ -1,15 +1,3 @@
-package com.bada.badaback.route.dto;
-
-import jakarta.validation.constraints.NotBlank;
-
-public record RouteRequestDto(
-        @NotBlank(message = "출발 latitude는 필수입니다.")
-        String startLat,
-        @NotBlank(message = "출발 longitude는 필수입니다.")
-        String startLng,
-        @NotBlank(message = "도착 latitude는 필수입니다.")
-        String endLat,
-        @NotBlank(message = "도착 longitude는 필수입니다.")
-        String endLng
-) {
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:92b8c9ec3cae00e3416e317e3bdefac45528cfce2443fdb6515550b2287adf97
+size 679

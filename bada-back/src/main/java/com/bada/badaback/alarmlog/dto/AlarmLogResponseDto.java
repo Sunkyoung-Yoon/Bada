@@ -1,21 +1,3 @@
-package com.bada.badaback.alarmlog.dto;
-
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-@Getter
-@Builder
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class AlarmLogResponseDto {
-  private String type;
-  private Long memberId;
-  private Long childId;
-  private Long isRead;
-  private LocalDateTime createAt;
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:715269abd64ab971e5701c512679dcfc232cdf47cab7655363cabf64e5723096
+size 445

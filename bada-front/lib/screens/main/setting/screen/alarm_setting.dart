@@ -1,29 +1,3 @@
-import 'package:flutter/material.dart';
-import 'dart:ui';
-
-class AlarmSetting extends StatelessWidget {
-  const AlarmSetting({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('알람 설정'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-      ),
-      body: Column(
-        children: <Widget>[
-          Text('displaySize : ${MediaQuery.of(context).size}'),
-          Text('displayHeight : ${MediaQuery.of(context).size.height}'),
-          Text('displayWidth : ${MediaQuery.of(context).size.width}'),
-          Text(
-            'devicePixelRatio : ${MediaQuery.of(context).devicePixelRatio}',
-          ),
-          Text('statusBarHeight : ${MediaQuery.of(context).padding.top}'),
-          Text('window.physicalSize : ${window.physicalSize}'),
-        ],
-      ),
-    );
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:26e55111069950cc465f55d5e101ab3fe16f87d9976404c2560e47d1c429bec5
+size 847

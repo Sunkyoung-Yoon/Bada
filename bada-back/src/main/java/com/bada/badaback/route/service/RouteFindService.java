@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e475484b46fe51c84326fca18342c30a6360886bda28c0a6183f25591a13972d
-size 800
+package com.bada.badaback.route.service;
+
+import com.bada.badaback.global.exception.BaseException;
+import com.bada.badaback.member.domain.Member;
+import com.bada.badaback.route.domain.Route;
+import com.bada.badaback.route.domain.RouteRepository;
+import com.bada.badaback.route.exception.RouteErrorCode;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class RouteFindService {
+    private final RouteRepository routeRepository;
+
+    public Route findByMember(Member child){
+        log.info("==========경로 찾기 FindService 호출=============");
+        return routeRepository.findByMember(child).orElseThrow(()-> BaseException.type(RouteErrorCode.ROUTE_NOT_FOUND));
+    }
+}

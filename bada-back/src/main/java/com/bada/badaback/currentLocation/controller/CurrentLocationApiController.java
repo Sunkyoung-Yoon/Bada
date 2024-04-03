@@ -1,3 +1,42 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4084ddb07fafe9a3cde2fac615d541952895ca004446869a7df4140b50d94738
-size 1890
+package com.bada.badaback.currentLocation.controller;
+
+import com.bada.badaback.currentLocation.dto.CurrentLocationRequestDto;
+import com.bada.badaback.currentLocation.dto.CurrentLocationResponseDto;
+import com.bada.badaback.currentLocation.service.CurrentLocationService;
+import com.bada.badaback.global.annotation.ExtractPayload;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "최근 위치", description = "CurrentLocationApiController")
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/currentLocation")
+public class CurrentLocationApiController {
+    private final CurrentLocationService currentLocationService;
+
+    @PostMapping
+    public ResponseEntity<Void> create(@ExtractPayload Long memberId, @RequestBody @Valid CurrentLocationRequestDto requestDto) {
+        currentLocationService.create(memberId, requestDto.currentLatitude(), requestDto.currentLongitude());
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<Void> update(@ExtractPayload Long memberId, @RequestBody @Valid CurrentLocationRequestDto requestDto) {
+        currentLocationService.update(memberId, requestDto.currentLatitude(), requestDto.currentLongitude());
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@ExtractPayload Long memberId) {
+        currentLocationService.delete(memberId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{childId}")
+    public ResponseEntity<CurrentLocationResponseDto> readCurrentLocation(@ExtractPayload Long memberId, @PathVariable("childId") Long childId) {
+        return ResponseEntity.ok(currentLocationService.read(memberId, childId));
+    }
+}

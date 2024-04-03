@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3899f1c9e0323715f2f8589035bcc8f988fea017e37865eb0ef2b11d20a35b3c
-size 373
+package com.bada.badaback.auth.dto;
+
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthAlreadyRequestDto(
+        @NotBlank(message = "email은 필수입니다.")
+        String email,
+        @NotBlank(message = "social은 필수입니다.")
+        String social,
+        @NotBlank(message = "fcmToken은 필수입니다.")
+        String fcmToken
+) {
+}

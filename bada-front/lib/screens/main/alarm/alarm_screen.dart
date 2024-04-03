@@ -88,7 +88,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                       if (members.isNotEmpty) {
                         return Expanded(
                           child: SizedBox(
-                            height: 150,
+                            height: 125,
                             width: 150,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,

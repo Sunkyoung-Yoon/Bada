@@ -5,11 +5,15 @@ import 'dart:io';
 import 'package:bada/provider/profile_provider.dart';
 import 'package:bada/screens/main/my_family/model/current_location.dart';
 import 'package:bada/screens/main/my_family/model/route_info.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:kakao_map_plugin/kakao_map_plugin.dart';
+import 'package:kakao_map_plugin/kakao_map_plugin.dart' as kakao;
+import 'package:lottie/lottie.dart';
 
 class ExistingPathMap extends StatefulWidget {
   final int memberId;
@@ -24,33 +28,40 @@ class ExistingPathMap extends StatefulWidget {
 }
 
 // TODO : 경로 삭제 버튼 추가
-class _ExistingPathMapState extends State<ExistingPathMap> {
+class _ExistingPathMapState extends State<ExistingPathMap>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-  late KakaoMapController mapController;
+  late kakao.KakaoMapController mapController;
+  late final AnimationController _lottieController;
   Future<List>? myPlaces;
-  List<LatLng> pathPoints = []; // 경로 포인트 리스트
-  Set<Marker> markers = {}; // 마커 변수
-  Set<Polyline> polylines = {}; // 폴리라인 변수
-  LatLng? middle;
+  List<kakao.LatLng> pathPoints = []; // 경로 포인트 리스트
+  Set<kakao.Marker> markers = {}; // 마커 변수
+  Set<kakao.Polyline> polylines = {}; // 폴리라인 변수
+  kakao.LatLng? middle;
   Future<bool>? _loadPath;
   String? placeName;
   String? addressName;
   String? childName;
   String? childProfileUrl;
-  LatLng? currentLocation;
-  LatLng? departure;
-  LatLng? destination;
+  kakao.LatLng? currentLocation;
+  kakao.LatLng? departure;
+  kakao.LatLng? destination;
   double? verticalForLevel;
   double? horizontalForLevel;
+  bool isCctvActivated = false;
 
   // 경로 찾기 + 현재 위치 찾기
   Future<bool> _loadExistingPath() async {
-    return await _requestCurrentLocation() && await _requestPath();
+    await _requestCurrentLocation();
+    await _requestPath();
+    return true;
   }
 
   // 현재 위치 요청
   Future<bool> _requestCurrentLocation() async {
     var accessToken = await secureStorage.read(key: 'accessToken');
+    debugPrint('엑세스 토큰: $accessToken');
+    debugPrint('멤버 아이디: ${widget.memberId}');
     try {
       final uri = Uri.parse(
         'https://j10b207.p.ssafy.io/api/currentLocation/${widget.memberId}',
@@ -66,13 +77,18 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
         final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         CurrentLocation responseCurrentLocation =
             CurrentLocation.fromJson(jsonData);
+        debugPrint(
+          '현재 위치: ${responseCurrentLocation.currentLatitude}, ${responseCurrentLocation.currentLongitude}',
+        );
+        debugPrint('이름: ${responseCurrentLocation.name}');
+        debugPrint('프로필: ${responseCurrentLocation.profileUrl}');
         setState(() {
-          currentLocation = LatLng(
+          currentLocation = kakao.LatLng(
             responseCurrentLocation.currentLatitude,
             responseCurrentLocation.currentLongitude,
           );
-          childName = responseCurrentLocation.childName;
-          childProfileUrl = responseCurrentLocation.childProfileUrl;
+          childName = responseCurrentLocation.name;
+          childProfileUrl = responseCurrentLocation.profileUrl;
         });
         return true;
       } else {
@@ -81,6 +97,7 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
       }
     } catch (e) {
       debugPrint('현재 위치를 가져오는 데 실패했습니다.');
+      debugPrint('에러: $e');
       return false;
     }
   }
@@ -107,22 +124,22 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       RouteInfo routeInfo = RouteInfo.fromJson(jsonData);
       // 시작점 추가
-      pathPoints.add(LatLng(routeInfo.startLat, routeInfo.startLng));
+      pathPoints.add(kakao.LatLng(routeInfo.startLat, routeInfo.startLng));
 
       List<Point> pointList = routeInfo.pointList;
       for (var point in pointList) {
         double lat = point.latitude;
         double lng = point.longitude;
-        pathPoints.add(LatLng(lat, lng));
+        pathPoints.add(kakao.LatLng(lat, lng));
       }
 
       // 종점 추가
-      pathPoints.add(LatLng(routeInfo.endLat, routeInfo.endLng));
+      pathPoints.add(kakao.LatLng(routeInfo.endLat, routeInfo.endLng));
 
       setState(() {
-        departure = LatLng(routeInfo.startLat, routeInfo.startLng);
-        destination = LatLng(routeInfo.endLat, routeInfo.endLng);
-        middle = LatLng(
+        departure = kakao.LatLng(routeInfo.startLat, routeInfo.startLng);
+        destination = kakao.LatLng(routeInfo.endLat, routeInfo.endLng);
+        middle = kakao.LatLng(
           (routeInfo.startLat + routeInfo.endLat) / 2,
           (routeInfo.startLng + routeInfo.endLng) / 2,
         );
@@ -149,7 +166,25 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this); // Observer 등록
+    _lottieController = AnimationController(vsync: this);
     _loadPath = _loadExistingPath();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this); // Observer를 해제합니다.
+    _lottieController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // 앱이 다시 활성화될 때 애니메이션을 재시작합니다.
+    if (state == AppLifecycleState.resumed) {
+      _lottieController.repeat();
+    }
   }
 
   @override
@@ -162,7 +197,7 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
     return FutureBuilder(
       future: _loadPath,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.data != true) {
           // Future가 완료되지 않은 경우
           return const Center(
             child: CircularProgressIndicator(),
@@ -225,7 +260,7 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
             ),
             body: Stack(
               children: [
-                KakaoMap(
+                kakao.KakaoMap(
                   onMapCreated: ((controller) {
                     mapController = controller;
                     if (verticalForLevel! > 0.127 ||
@@ -249,32 +284,38 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
                     } else {
                       mapController.setLevel(3);
                     }
-                    // 경로를 지도에 그리기 위한 Polyline 객체 생성
+                    // 경로를 지도에 그리기 위한 kakao.Polyline 객체 생성
                     polylines.add(
-                      Polyline(
+                      kakao.Polyline(
                         polylineId: 'path_${polylines.length}',
                         points: pathPoints,
                         strokeColor: Colors.blue,
                         strokeOpacity: 1,
                         strokeWidth: 5,
-                        strokeStyle: StrokeStyle.solid,
+                        strokeStyle: kakao.StrokeStyle.solid,
                       ),
                     );
                     setState(() {});
                     markers.add(
-                      Marker(
+                      kakao.Marker(
                         markerId: 'departure',
                         latLng: departure!,
                         markerImageSrc: startSrc,
-                        width: 50,
+                        offsetX: 15,
+                        offsetY: 30,
+                        width: 28,
+                        height: 35,
                       ),
                     );
                     markers.add(
-                      Marker(
+                      kakao.Marker(
                         markerId: 'destination',
                         latLng: destination!,
                         markerImageSrc: endSrc,
-                        width: 50,
+                        offsetX: 15,
+                        offsetY: 30,
+                        width: 28,
+                        height: 35,
                       ),
                     );
                   }),
@@ -283,28 +324,82 @@ class _ExistingPathMapState extends State<ExistingPathMap> {
                   center: middle,
                 ),
                 Positioned(
-                  top: 10,
-                  right: 10,
+                  bottom: 150,
+                  right: 20,
                   child: GestureDetector(
                     onTap: () async {
                       await _requestCurrentLocation();
-                      // markerId가 'currentLocation'인 마커를 markers 집합에서 제거
+                      // kakao.MarkerId가 'currentLocation'인 마커를 markers 집합에서 제거
                       markers.removeWhere(
                         (marker) => marker.markerId == 'currentLocation',
                       );
                       markers.add(
-                        Marker(
+                        kakao.Marker(
                           markerId: 'currentLocation',
                           latLng: currentLocation!,
                           markerImageSrc: childProfileUrl!,
-                          width: 50,
+                          offsetX: 12,
+                          offsetY: 12,
+                          width: 30,
+                          height: 30,
                         ),
                       );
+
+                      await mapController.panTo(currentLocation!);
                       setState(() {});
                     },
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(childProfileUrl!),
+                    child: Column(
+                      children: [
+                        Lottie.asset(
+                          'assets/lottie/down-arrow.json',
+                          width: 60,
+                          height: 60,
+                          controller: _lottieController,
+                          onLoaded: (p0) {
+                            _lottieController.duration = p0.duration;
+                            _lottieController.repeat();
+                          },
+                        ),
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(childProfileUrl!),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 80,
+                  right: 20,
+                  child: GestureDetector(
+                    onTap: () async {
+                      if (isCctvActivated) {
+                        isCctvActivated = !isCctvActivated;
+                        markers
+                            .removeWhere((marker) => marker.markerId == 'cctv');
+                      } else {
+                        isCctvActivated = !isCctvActivated;
+                        // cctv 리스트 마커 추가
+                        markers.add(
+                          kakao.Marker(
+                            markerId: 'cctv',
+                            latLng: kakao.LatLng(37.5665, 126.9780),
+                            markerImageSrc:
+                                'https://bada-bucket.s3.ap-northeast-2.amazonaws.com/flutter/cctv2.png',
+                            offsetX: 12,
+                            offsetY: 12,
+                            width: 30,
+                            height: 30,
+                          ),
+                        );
+                      }
+                      setState(() {});
+                    },
+                    child: const CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                        'https://bada-bucket.s3.ap-northeast-2.amazonaws.com/flutter/cctv1.png',
+                      ),
                     ),
                   ),
                 ),

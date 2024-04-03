@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bada/screens/main/alarm/alarm_list.dart';
 import 'package:bada/screens/main/my_family/screen/existing_path_map.dart';
 import 'package:bada/screens/main/profile_edit.dart';
@@ -52,152 +54,155 @@ class _FamilyMemberState extends State<FamilyMember>
     final deviceWidth = UIhelper.deviceWidth(context);
     final deviceHeight = UIhelper.deviceHeight(context);
 
-    return FutureBuilder(
-      future: null,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Column(
-          children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                deviceWidth * 0.05,
-                deviceHeight * 0.02,
-                deviceWidth * 0.05,
-                deviceHeight * 0.02,
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(
+            deviceWidth * 0.00,
+            deviceHeight * 0.02,
+            deviceWidth * 0.05,
+            deviceHeight * 0.02,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xff696DFF), width: 0.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 125 * UIhelper.scaleWidth(context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileEdit(
+                              nickname: widget.name,
+                              profileUrl: widget.profileUrl,
+                            ),
+                          ),
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: widget.profileUrl != null
+                            ? NetworkImage(widget.profileUrl!)
+                            : null,
+                        child: widget.profileUrl == null
+                            ? Image.asset('assets/img/default_profile.png')
+                            : null,
+                      ),
+                    ),
+                    SizedBox(
+                      height: deviceHeight * 0.01,
+                    ),
+                    Text(
+                      widget.name,
+                      style: const TextStyle(fontSize: 12),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
               ),
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xff696DFF), width: 0.5),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    width: 125 * UIhelper.scaleWidth(context),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfileEdit(
-                                  nickname: widget.name,
-                                  profileUrl: widget.profileUrl,
+              if (widget.isParent == 0)
+                Column(
+                  children: [
+                    widget.movingState == 0
+                        ? ElevatedButton(
+                            onPressed: null, // 비활성화 상태로 만듭니다.
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.fromLTRB(
+                                deviceWidth * 0.03,
+                                deviceHeight * 0.003,
+                                deviceWidth * 0.04,
+                                deviceHeight * 0.003,
+                              ),
+                              surfaceTintColor: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              // 비활성화 상태일 때의 색상을 지정할 수 있습니다.
+                            ),
+                            child: Row(
+                              children: [
+                                Lottie.asset(
+                                  'assets/lottie/walking.json',
+                                  width: 45 * UIhelper.scaleWidth(context),
+                                  height: 45 * UIhelper.scaleHeight(context),
+                                  controller: _lottieController,
+                                  onLoaded: (p0) {
+                                    _lottieController.duration = p0.duration;
+
+                                    _lottieController.stop();
+                                  },
                                 ),
-                              ),
-                            );
-                          },
-                          child: CircleAvatar(
-                            radius: 35,
-                            backgroundImage: widget.profileUrl != null
-                                ? NetworkImage(widget.profileUrl!)
-                                : null,
-                            child: widget.profileUrl == null
-                                ? Image.asset('assets/img/default_profile.png')
-                                : null,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10 * UIhelper.scaleHeight(context),
-                        ),
-                        if (widget.memberId == myMemberId)
-                          Text(
-                            widget.name,
-                            style: const TextStyle(fontSize: 16),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
+                                SizedBox(
+                                  width: 10 * UIhelper.scaleWidth(context),
+                                ),
+                                const Text('경로 비활성화'),
+                              ],
+                            ),
                           )
-                        else
-                          Text(
-                            widget.name,
-                            style: const TextStyle(fontSize: 16),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              backgroundColor: const Color(0xff696DFF),
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.fromLTRB(
+                                deviceWidth * 0.04,
+                                deviceHeight * 0.003,
+                                deviceWidth * 0.05,
+                                deviceHeight * 0.003,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ExistingPathMap(
+                                    memberId: widget.memberId,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Lottie.asset(
+                                  'assets/lottie/walking.json',
+                                  width: 45 * UIhelper.scaleWidth(context),
+                                  height: 45 * UIhelper.scaleHeight(context),
+                                  controller: _lottieController,
+                                  onLoaded: (p0) {
+                                    _lottieController.duration = p0.duration;
+
+                                    _lottieController.repeat();
+                                  },
+                                ),
+                                SizedBox(
+                                  width: 10 * UIhelper.scaleWidth(context),
+                                ),
+                                const Text('이동중'),
+                              ],
+                            ),
                           ),
-                      ],
-                    ),
-                  ),
-                  if (widget.isParent == 0)
-                    Column(
-                      children: [
-                        widget.movingState == 0
-                            ? ElevatedButton(
-                                onPressed: () {},
-                                child: const Text('정지'),
-                              )
-                            : ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ExistingPathMap(
-                                        memberId: widget.memberId,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: const Text('시작'),
-                              ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Lottie.asset(
-                              'assets/lottie/walking.json',
-                              width: 80 * UIhelper.scaleWidth(context),
-                              height: 80 * UIhelper.scaleHeight(context),
-                              controller: _lottieController,
-                              onLoaded: (p0) {
-                                _lottieController.duration = p0.duration;
-                                if (widget.movingState == 0 ||
-                                    widget.movingState == null) {
-                                  _lottieController.stop();
-                                } else {
-                                  _lottieController.repeat();
-                                }
-                              },
-                            ),
-                            Lottie.asset(
-                              'assets/lottie/forward-arrow.json',
-                              width: 60 * UIhelper.scaleWidth(context),
-                              height: 30 * UIhelper.scaleHeight(context),
-                              controller: _lottieController,
-                              onLoaded: (p0) {
-                                _lottieController.duration = p0.duration;
-                                _lottieController.forward();
-                              },
-                            ),
-                            if (widget.movingState == 0)
-                              Lottie.asset(
-                                'assets/lottie/cross.json',
-                                width: 80 * UIhelper.scaleWidth(context),
-                                height: 80 * UIhelper.scaleHeight(context),
-                                controller: _lottieController,
-                                onLoaded: (p0) {
-                                  _lottieController.duration = p0.duration;
-                                  _lottieController.stop();
-                                },
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: UIhelper.deviceHeight(context) * 0.01,
-            ),
-          ],
-        );
-      },
+                  ],
+                ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: UIhelper.deviceHeight(context) * 0.01,
+        ),
+      ],
     );
   }
 }
@@ -268,7 +273,7 @@ class _FamilyMember2State extends State<FamilyMember2>
                 );
               },
               child: CircleAvatar(
-                backgroundColor: Colors.black,
+                backgroundColor: Colors.white,
                 radius: 35,
                 backgroundImage: widget.profileUrl != null
                     ? NetworkImage(widget.profileUrl!)

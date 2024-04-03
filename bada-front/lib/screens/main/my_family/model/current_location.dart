@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4741cbc590055b8756472392d0e39c2132724b0f274ec5832640b60edec5bbcd
-size 678
+class CurrentLocation {
+  final double currentLatitude;
+  final double currentLongitude;
+  final int childId;
+  final String childName;
+  final String? childProfileUrl;
+
+  CurrentLocation({
+    required this.currentLatitude,
+    required this.currentLongitude,
+    required this.childId,
+    required this.childName,
+    required this.childProfileUrl,
+  });
+
+  factory CurrentLocation.fromJson(Map<String, dynamic> json) {
+    return CurrentLocation(
+      currentLatitude: json['currentLatitude'],
+      currentLongitude: json['currentLongitude'],
+      childId: json['childId'],
+      childName: json['childName'],
+      childProfileUrl: json['childProfileUrl'],
+    );
+  }
+}

@@ -1,23 +1,3 @@
-package com.bada.badaback.global.security;
-
-import com.bada.badaback.global.exception.BaseException;
-import com.bada.badaback.global.exception.GlobalErrorCode;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
-
-@Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
-    private static final long serialVersionUID = -7858869558953243875L;
-
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
-        throw BaseException.type(GlobalErrorCode.UNAUTHORIZED); // 자격증명 없이 접근 -> 401
-
-    }
-}
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:e3ab10d49c445d25f00f6a9125858ed4ff66d1ef22d3fe4c2be7e33cb092c906
+size 895

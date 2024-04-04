@@ -1,7 +1,3 @@
-package com.bada.badaback.feature;
-
-public class TokenFixture {
-    public static final String BEARER_TOKEN = "Bearer ";
-    public static final String ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjc3OTM3MjI0LCJleHAiOjE2Nzc5NDQ0MjR9.t61tw4gDEBuXBn_DnCwiPIDaI-KcN9Zkn3QJSEK7fag";
-    public static final String REFRESH_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiaWF0IjoxNjc3OTM3MjI0LCJleHAiOjE2Nzg1NDIwMjR9.doqGa5Hcq6chjER1y5brJEv81z0njcJqeYxJb159ZX4";
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ce02e44ea40d105c1154240a37d72d1340d86945f6e1f25f3b9d2ed1d89dbcac
+size 466

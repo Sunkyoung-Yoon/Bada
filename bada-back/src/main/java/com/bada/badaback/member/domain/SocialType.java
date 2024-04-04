@@ -1,31 +1,3 @@
-package com.bada.badaback.member.domain;
-
-import com.bada.badaback.global.utils.EnumConverter;
-import com.bada.badaback.global.utils.EnumStandard;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
-public enum SocialType implements EnumStandard {
-    NAVER("NAVER"),
-    KAKAO("KAKAO"),
-    CHILD("CHILD")
-    ;
-
-    private final String socialType;
-
-    @Override
-    public String getValue() {
-        return socialType;
-    }
-
-    @jakarta.persistence.Converter
-    public static class SocialTypeConverter extends EnumConverter<SocialType> {
-        public SocialTypeConverter() {
-            super(SocialType.class);
-        }
-    }
-}
-
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:545a03f45e0f6bac0c961ce163cdd469cd74df9b73293515c49f72175fc7b5b8
+size 685

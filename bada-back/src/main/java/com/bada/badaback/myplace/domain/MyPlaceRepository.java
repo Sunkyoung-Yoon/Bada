@@ -1,16 +1,3 @@
-package com.bada.badaback.myplace.domain;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.util.List;
-import java.util.Optional;
-
-public interface MyPlaceRepository extends JpaRepository<MyPlace, Long> {
-    @Query("select distinct mp from MyPlace mp where mp.id in :placeIdList order by mp.createdAt desc")
-    List<MyPlace> myPlaceList(@Param("placeIdList") List<Long> placeIdList);
-
-    @Query("select mp from MyPlace mp where mp.placeLatitude = :placeLat and mp.placeLongitude = :placeLng")
-    List<MyPlace> findRoutePlace(@Param("placeLat") String placeLat, @Param("placeLng") String placeLng);
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e41395c427c7b7cecb190c8792dcaa6d3207b11d5adf3ed59d4123b5f8962c91
+size 740

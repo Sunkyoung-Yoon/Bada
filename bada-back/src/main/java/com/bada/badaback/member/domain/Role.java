@@ -1,29 +1,3 @@
-package com.bada.badaback.member.domain;
-
-import com.bada.badaback.global.utils.EnumConverter;
-import com.bada.badaback.global.utils.EnumStandard;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
-public enum Role implements EnumStandard {
-    ADMIN("ROLE_ADMIN"),
-    USER("ROLE_USER")
-    ;
-
-    private final String authority;
-
-    @Override
-    public String getValue() {
-        return authority;
-    }
-
-    @jakarta.persistence.Converter
-    public static class RoleConverter extends EnumConverter<Role> {
-        public RoleConverter() {
-            super(Role.class);
-        }
-    }
-}
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:90e50e5023f2c4a271969f56ebf556c358f2e0dadc9b855e528798cc93fb69a0
+size 640

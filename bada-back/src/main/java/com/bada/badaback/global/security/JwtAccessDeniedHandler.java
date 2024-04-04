@@ -1,19 +1,3 @@
-package com.bada.badaback.global.security;
-
-import com.bada.badaback.global.exception.BaseException;
-import com.bada.badaback.global.exception.GlobalErrorCode;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.stereotype.Component;
-
-@Component
-public class JwtAccessDeniedHandler implements AccessDeniedHandler {
-    @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) {
-        throw BaseException.type(GlobalErrorCode.INVALID_USER); // 필요한 권한 x -> 403
-
-    }
-}
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:f7a3d454a1591a163aafdf88fd39d2fbe894492591813134a448d9e2561747b8
+size 766

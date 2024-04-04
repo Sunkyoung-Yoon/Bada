@@ -1,13 +1,3 @@
-package com.bada.badaback.feature;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
-public enum AlarmTriggerFixture {
-    OUT_OF_PATH(35.111,127.666),
-    IN_PATH(36.420552649750135,127.39078782797036);
-    private final double Lat;
-    private final double Lng;
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:bdf0ef5ef9e8dff394d3beb7b6e4c320a0134e4aab0de3cff3c417fcc17b919e
+size 312

@@ -1,18 +1,3 @@
-package com.bada.badaback.kafka.controller;
-
-
-import com.bada.badaback.alarmlog.service.AlarmLogService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@Slf4j
-@RequiredArgsConstructor
-public class AlarmConnectController {
-
-  private final AlarmLogService alarmLogService;
-  public static final Long DEFAULT_TIMEOUT = 3600L * 1000;
-
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:b504603e45e82840f542d3ba7a4d3cc343967a51ab00c3fc61719d2df758ba6a
+size 440

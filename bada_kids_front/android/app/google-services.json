@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "981845180527",
+    "project_id": "bada-kids",
+    "storage_bucket": "bada-kids.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981845180527:android:22ea5ca187a74091354d9a",
+        "android_client_info": {
+          "package_name": "com.bada.kids"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnZdjq5L6cUBIc8xip-3gPko05QSXki2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

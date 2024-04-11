@@ -1,13 +1,3 @@
-package com.bada.badaback;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class BadaBackApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(BadaBackApplication.class, args);
-	}
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:41710085744d4989192710a962d3b91892c70c0210750c51cc6d2ac9711c315c
+size 314

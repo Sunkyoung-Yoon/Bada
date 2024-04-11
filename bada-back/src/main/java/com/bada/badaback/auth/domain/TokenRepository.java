@@ -1,21 +1,3 @@
-package com.bada.badaback.auth.domain;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.util.Optional;
-
-public interface TokenRepository extends JpaRepository<Token, Long> {
-    @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("UPDATE Token t" +
-            " SET t.refreshToken = :refreshToken" +
-            " WHERE t.memberId = :memberId")
-    void reissueRefreshTokenByRtrPolicy(@Param("memberId") Long memberId, @Param("refreshToken") String newRefreshToken);
-
-    Optional<Token> findByMemberId(Long memberId);
-    boolean existsByMemberIdAndRefreshToken(Long memberId, String refreshToken);
-    void deleteByMemberId(Long memberId);
-}
-
+version https://git-lfs.github.com/spec/v1
+oid sha256:bd64e6a058b7dc3b1c28594972dd021ac9138f2593c44a1a1d0773207002dd9c
+size 865
